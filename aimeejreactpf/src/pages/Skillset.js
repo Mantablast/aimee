@@ -5,7 +5,7 @@ function Skillset() {
 
     return (
         <div>
-
+            Skillset
         </div>
     )
 }
