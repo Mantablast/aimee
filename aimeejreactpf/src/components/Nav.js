@@ -1,18 +1,19 @@
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import React, { useState } from 'react';
 
-function About() {
+function Nav() {
 
     return (
-        <div>
-            <div className="topNav">
-            <Link to="/about">About</Link>
-            <Link to="/contact">Contact</Link>
-            <Link to="/skillset">Skillset</Link>
-            <Link to="/resume">Resume</Link>
+        <div className="nav-box">
+            <div className="topnav" id="myTopnav">
+                <Link className="hvr-float-shadow" to="/" className="active">Home</Link>
+                <Link className="hvr-float-shadow" to="/about">About</Link>
+                <Link className="hvr-float-shadow" to="/contact">Contact</Link>
+                <Link className="hvr-float-shadow" to="/skillset">Skillset</Link>
+                <Link className="hvr-float-shadow" to="/Resume">Resume</Link>
             </div>
         </div>
     )
 }
 
-export default About;
+export default Nav;
