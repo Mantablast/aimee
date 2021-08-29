@@ -14,6 +14,9 @@ function Home() {
                     <h4>Welcome to my portfolio</h4>
                 </div>
             </section>
+            <section id="skillset">
+                
+            </section>
         </div>
     )
 }
