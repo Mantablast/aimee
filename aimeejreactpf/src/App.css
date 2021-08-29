@@ -155,8 +155,8 @@
 }
 
 .herosmallimg {
-  width: 70px;
-  height: auto;
+  width: 5vw;
+  height: 5vw;
 }
 
 .hero-inner h3 {
@@ -165,7 +165,7 @@
 }
 
 .hero-inner-small img {
-  width: 40vw;
+  width: 30vw;
   height: auto;
 }
 
