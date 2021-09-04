@@ -174,3 +174,19 @@ body {
 .hero-greeting {
   display: flex;
 }
+
+/* Chart info */
+.chart-style {
+  width:40vw;
+  height:40vh;
+}
+.skill-blocks{
+  display: flex;
+  /* align-items: left; */
+  padding-left:100px;
+}
+
+.skill-titles {
+  display: flex;
+  flex-direction: column;
+}

@@ -10,7 +10,8 @@ function Nav() {
                 <Link className="hvr-float-shadow" to="/about">About</Link>
                 <Link className="hvr-float-shadow" to="/contact">Contact</Link>
                 <Link className="hvr-float-shadow" to="/skillset">Skillset</Link>
-                <Link className="hvr-float-shadow" to="/Resume">Resume</Link>
+                <Link className="hvr-float-shadow" to="/resume">Resume</Link>
+                <Link className="hvr-float-shadow" to="/givingthanks">Giving Thanks</Link>
             </div>
         </div>
     )

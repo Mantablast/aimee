@@ -8,6 +8,7 @@ import About from './pages/About';
 import Nav from './components/Nav';
 import Contact from './pages/Contact'
 import Resume from './pages/Resume'
+import GivingThanks from './pages/GivingThanks';
 // import express from 'express';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
             <Route exact path="/about" component={About} />
             <Route exact path="/contact" component={Contact} />
             <Route exact path="/resume" component={Resume} />
+            <Route exact path="/givingthanks" component={GivingThanks} />
           </Switch>
         </Router>
       </main>
