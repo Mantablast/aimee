@@ -176,13 +176,14 @@ body {
 }
 
 /* Chart info */
-.chart-style {
+.chart-style, .timeline-chart {
   width:40vw;
-  height:40vh;
+  height:60vh;
 }
 .skill-blocks{
   display: flex;
   /* align-items: left; */
+  height: 100em;
   padding-left:100px;
 }
 
