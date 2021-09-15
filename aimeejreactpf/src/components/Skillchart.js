@@ -3,45 +3,38 @@ import React, { useState } from 'react';
 import { ResponsivePie } from '@nivo/pie';
 function Skillchart() {
     const data =
-        [
-            {
-                "id": "React",
-                "label": "React",
-                "value": 265,
-                "color": "hsl(222, 70%, 50%)"
-            },
-            {
-                "id": "Css",
-                "label": "Css",
-                "value": 188,
-                "color": "hsl(305, 70%, 50%)"
-            },
-            {
-                "id": "Javascript",
-                "label": "Javascript",
-                "value": 418,
-                "color": "hsl(104, 70%, 50%)"
-            },
-            {
-                "id": "Node",
-                "label": "Node",
-                "value": 200,
-                "color": "hsl(104, 70%, 50%)"
-            },
-            {
-                "id": "MySql",
-                "label": "MySql",
-                "value": 100,
-                "color": "hsl(104, 70%, 50%)"
-            },
-            {
-                "id": "MongoDB",
-                "type": "patternDots",
-                "label": "MongoDB",
-                "value": 100,
-                "color": "hsl(104, 70%, 50%)"
-            },
-        ]
+    [
+        {
+          "id": "c",
+          "label": "c",
+          "value": 18,
+          "color": "hsl(104, 70%, 50%)"
+        },
+        {
+          "id": "css",
+          "label": "css",
+          "value": 312,
+          "color": "hsl(271, 70%, 50%)"
+        },
+        {
+          "id": "php",
+          "label": "php",
+          "value": 572,
+          "color": "hsl(188, 70%, 50%)"
+        },
+        {
+          "id": "scala",
+          "label": "scala",
+          "value": 442,
+          "color": "hsl(91, 70%, 50%)"
+        },
+        {
+          "id": "elixir",
+          "label": "elixir",
+          "value": 45,
+          "color": "hsl(292, 70%, 50%)"
+        }
+      ]
     const MyResponsivePie = ({ data })
     return (
         <div>
@@ -53,15 +46,14 @@ function Skillchart() {
         padAngle={0.7}
         cornerRadius={3}
         activeOuterRadiusOffset={8}
-        colors={{ scheme: 'red_purple' }}
         borderWidth={1}
-        borderColor={{ from: 'color', modifiers: [ [ 'darker', 0.2 ] ] }}
+        borderColor={{ from: 'color', modifiers: [ [ 'brighter', 0.2 ] ] }}
         arcLinkLabelsSkipAngle={10}
-        arcLinkLabelsTextColor="#fdfcfc"
+        arcLinkLabelsTextColor={{ from: 'color', modifiers: [] }}
         arcLinkLabelsThickness={2}
-        arcLinkLabelsColor={{ from: 'color' }}
+        arcLinkLabelsColor={{ from: 'color', modifiers: [] }}
         arcLabelsSkipAngle={10}
-        arcLabelsTextColor={{ from: 'color', modifiers: [ [ 'darker', 2 ] ] }}
+        arcLabelsTextColor={{ theme: 'labels.text.fill' }}
         defs={[
             {
                 id: 'dots',
@@ -85,37 +77,49 @@ function Skillchart() {
         fill={[
             {
                 match: {
-                    id: 'React'
+                    id: 'ruby'
                 },
                 id: 'dots'
             },
             {
                 match: {
-                    id: 'Css'
+                    id: 'c'
                 },
                 id: 'dots'
             },
             {
                 match: {
-                    id: 'Javascript'
+                    id: 'go'
                 },
                 id: 'dots'
             },
             {
                 match: {
-                    id: 'Node'
+                    id: 'python'
                 },
                 id: 'dots'
             },
             {
                 match: {
-                    id: 'MySql'
+                    id: 'scala'
                 },
                 id: 'lines'
             },
             {
                 match: {
-                    id: 'MongoDB'
+                    id: 'lisp'
+                },
+                id: 'lines'
+            },
+            {
+                match: {
+                    id: 'elixir'
+                },
+                id: 'lines'
+            },
+            {
+                match: {
+                    id: 'javascript'
                 },
                 id: 'lines'
             }
@@ -130,7 +134,7 @@ function Skillchart() {
                 itemsSpacing: 0,
                 itemWidth: 100,
                 itemHeight: 18,
-                itemTextColor: '#fdfcfc',
+                itemTextColor: '#999',
                 itemDirection: 'left-to-right',
                 itemOpacity: 1,
                 symbolSize: 18,
@@ -139,7 +143,7 @@ function Skillchart() {
                     {
                         on: 'hover',
                         style: {
-                            itemTextColor: '#fcfcfc'
+                            itemTextColor: '#000'
                         }
                     }
                 ]
