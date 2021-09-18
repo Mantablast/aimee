@@ -2,10 +2,9 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import React, { useState } from "react";
 import Skillchart from "../components/Skillchart";
 import Timeline from "../components/Timeline";
+import Projects from "../components/Projects";
 
 function Home() {
-
-    
     return (
         <div>
             <section className="hero">
@@ -22,22 +21,16 @@ function Home() {
                     <h4>Welcome to my portfolio</h4>
                 </div>
             </section>
-            <div className="skill-blocks">
-                <section id="skillset">
-                    <div className="skill-titles">
-                        <h2>Skillset</h2>
-                        <h4>Last Updated</h4>
+            <section className="skill-blocks">
+                <div className="sk-container">
+                    <div className="sk-container">
                     </div>
-                    <Skillchart />
-                </section>
-                <section>
-                    <div className="skill-titles">
-                        <h2>Timeline</h2>
-                        <h4>Last Updated</h4>
-                    <Timeline />
-                    </div>
-                </section>
-            </div>
+                        <Skillchart />
+                        <Timeline />
+                        <Projects />
+                </div>
+            </section>
+
         </div>
     );
 }

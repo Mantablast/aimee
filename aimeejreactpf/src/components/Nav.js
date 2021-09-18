@@ -6,7 +6,7 @@ function Nav() {
     return (
         <div className="nav-box">
             <div className="topnav" id="myTopnav">
-                <Link className="hvr-float-shadow" to="/" className="active">Home</Link>
+                <Link className="hvr-float-shadow" to="/">Home</Link>
                 <Link className="hvr-float-shadow" to="/about">About</Link>
                 <Link className="hvr-float-shadow" to="/contact">Contact</Link>
                 <Link className="hvr-float-shadow" to="/skillset">Skillset</Link>

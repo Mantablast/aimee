@@ -38,7 +38,12 @@ function Skillchart() {
     const MyResponsivePie = ({ data })
     return (
         <div>
-            <div className="chart-style">
+        <div className="skill-titles">
+                            <h2>Skillset</h2>
+                            <h4>Last Updated</h4>
+                        </div>
+        <div>
+            <div className="chart-style font-black">
             <ResponsivePie
         data={data}
         margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
@@ -151,6 +156,7 @@ function Skillchart() {
         ]}
     />
                     </div>
+        </div>
         </div>
     )
 }

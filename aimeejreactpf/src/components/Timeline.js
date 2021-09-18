@@ -92,7 +92,12 @@ function Timeline() {
     ]
     const MyResponsiveBullet = ({ data })
     return (
-        <div className="timeline-chart">
+        <div>
+        <div className="skill-titles">
+                            <h2>Timeline</h2>
+                            <h4>Last Updated</h4>
+                        </div>
+        <div className="timeline-chart font-black">
             <ResponsiveBullet
                 data={data}
                 margin={{ top: 25, right: 45, bottom: 25, left: 45 }}
@@ -101,6 +106,7 @@ function Timeline() {
                 titleOffsetX={-70}
                 measureSize={0.2}
             />
+        </div>
         </div>
     )
 }
