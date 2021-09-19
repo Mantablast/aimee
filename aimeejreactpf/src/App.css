@@ -219,3 +219,14 @@ body {
 .font-black {
   color: black;
 }
+
+.font-white {
+  color: white;
+}
+
+.project-container {
+  display: grid;
+  height: 40vh;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 0.8fr 0.8fr 0.8fr;
+}
