@@ -7,23 +7,22 @@ function Projects() {
         <div className="font-white">
             <h2>Projects Section</h2>
             <div className="project-container">
-                <div className="projects">
-                Project 1
+            <a href="https://w4tch-tow3r.herokuapp.com/" className="projects proj1 gradient-box">
+                </a>
+                <div className="projects proj2 gradient-box">
+                
                 </div>
-                <div className="projects">
-                Project 2
+                <div className="projects proj3 gradient-box">
+                
                 </div>
-                <div className="projects">
-                Project 3
+                <div className="projects proj4 gradient-box">
+                
                 </div>
-                <div className="projects">
-                Project 4
+                <div className="projects proj5 gradient-box">
+                
                 </div>
-                <div className="projects">
-                Project 5
-                </div>
-                <div className="projects">
-                Project 6
+                <div className="projects proj6 gradient-box">
+                
                 </div>
             </div>
         </div>
