@@ -47,7 +47,8 @@ body {
   align-items: center;
   justify-content: left;
   padding-left: 50px;
-  background-color: black;
+  /* background-color: black; */
+  background:transparent;
 }
 
 .topnav {
@@ -272,3 +273,19 @@ body {
   border-style: solid;
   border-image: linear-gradient(to right, darkblue, darkorchid) 1;
 }
+
+/* header {
+  padding: 20px 35px;
+  background-color: var(--tertiary-color);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  background-image: url("../images/hero-bg.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: 80%;
+  z-index: 9999;
+} */
