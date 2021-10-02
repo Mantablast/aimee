@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  color: white;
+  color: rgb(7, 7, 7);
   background-color: black;
 }
 body {  
@@ -25,7 +25,7 @@ body {
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: rgb(7, 7, 7);
 }
 
 .App-link {
@@ -43,9 +43,8 @@ body {
 
 /*---Navigation Bar ---*/
 .nav-box {
-
+  
   align-items: center;
-
   padding-left: 50px;
   /* background-color: black; */
   background:transparent;
@@ -57,7 +56,7 @@ body {
   position: sticky;
   position: -webkit-sticky;
   top: 0;
-  background-image: url("https://user-images.githubusercontent.com/71906988/131229639-1fb4ce9a-a292-4402-97ae-d89474c72a13.jpg");
+  background-image: url("https://images.unsplash.com/photo-1586355216449-d5bf3ea54d65?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80");
   background-size: cover;
   background-attachment: fixed;
   background-position: 80%;
@@ -72,7 +71,7 @@ body {
 .topnav a {
   /* float:right; */
   display: inline-block;
-  color: #f2f2f2;
+  color: #030303;
   text-align: center;
   padding: 30px 16px;
   text-decoration: none;
@@ -153,13 +152,12 @@ body {
   /* Text styles */
   text-align: center;
       /* Background styles */
-      background-image:  url(https://user-images.githubusercontent.com/71906988/131229639-1fb4ce9a-a292-4402-97ae-d89474c72a13.jpg);
+      background-image:  url(https://images.unsplash.com/photo-1586355216449-d5bf3ea54d65?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80);
       background-size: cover;
       background-position: center center;
       background-repeat: no-repeat;
       background-attachment: fixed;
       /* background-color: black; */
-  
 }
 
 .hero h3 {
@@ -177,7 +175,7 @@ body {
 }
 
 .hero-inner h3 {
-  color: rgb(248, 245, 245);
+  color: rgb(2, 2, 2);
   font-size: 20px;
 }
 
@@ -200,7 +198,7 @@ body {
   /* align-items: left; */
   height: 100em;
   /* padding-left:100px; */
-  background: #000000;
+  background: #032020;
   padding: 70px 0;
   transform: skew(0deg, -7deg) translateY(-85px);
 }
