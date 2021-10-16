@@ -17,8 +17,9 @@ function Home() {
                                 "https://user-images.githubusercontent.com/71906988/131229581-8ff06d38-54d5-48a6-84b7-8568b55937e0.png"
                             }
                         />
+                        <h4>Welcome to my portfolio</h4>
                     </div>
-                    <h4>Welcome to my portfolio</h4>
+                    
                 </div>
             </section>
             <section className="skill-blocks">

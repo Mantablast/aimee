@@ -23,9 +23,9 @@ function App() {
             <Route exact path="/" component={Home} />
             <Route exact path="/skillset" component={Skillset} />
             <Route exact path="/about" component={About} />
-            <Route exact path="/contact" component={Contact} />
             <Route exact path="/resume" component={Resume} />
             <Route exact path="/givingthanks" component={GivingThanks} />
+            <Route exact path="/contact" component={Contact} />
           </Switch>
         </Router>
       </main>

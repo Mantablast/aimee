@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  color: rgb(7, 7, 7);
+  color: rgb(245, 241, 241);
   background-color: black;
 }
 body {  
@@ -56,10 +56,10 @@ body {
   position: sticky;
   position: -webkit-sticky;
   top: 0;
-  background-image: url("https://images.unsplash.com/photo-1586355216449-d5bf3ea54d65?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80");
+  background-image: url("https://images.unsplash.com/photo-1552862750-746b8f6f7f25?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2340&q=80");
   background-size: cover;
   background-attachment: fixed;
-  background-position: 80%;
+  background-position: center center;
   z-index: 9999;
 }
 
@@ -71,7 +71,7 @@ body {
 .topnav a {
   /* float:right; */
   display: inline-block;
-  color: #030303;
+  color: #f8f5f5;
   text-align: center;
   padding: 30px 16px;
   text-decoration: none;
@@ -146,13 +146,13 @@ body {
   height: 100vh;
   /* Flexbox stuff */
   display: flex;
-  justify-content: left;
-  /* margin-left:100px; */
+  justify-content: right;
+  /* margin-right:100px; */
   align-items: center;
   /* Text styles */
   text-align: center;
       /* Background styles */
-      background-image:  url(https://images.unsplash.com/photo-1586355216449-d5bf3ea54d65?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80);
+      background-image:  url(https://images.unsplash.com/photo-1552862750-746b8f6f7f25?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2340&q=80);
       background-size: cover;
       background-position: center center;
       background-repeat: no-repeat;
@@ -166,7 +166,7 @@ body {
       /* Margins */
       margin-top: 0;
       margin-bottom: 0.5em;
-      margin-left: 100px;
+      /* margin-left: 100px; */
 }
 
 .herosmallimg {
@@ -175,7 +175,7 @@ body {
 }
 
 .hero-inner h3 {
-  color: rgb(2, 2, 2);
+
   font-size: 20px;
 }
 
@@ -186,6 +186,7 @@ body {
 
 .hero-greeting {
   display: flex;
+  margin-right: 100px;
 }
 
 /* Chart info */
@@ -198,7 +199,7 @@ body {
   /* align-items: left; */
   height: 100em;
   /* padding-left:100px; */
-  background: #032020;
+  background: #0b0838;
   padding: 70px 0;
   transform: skew(0deg, -7deg) translateY(-85px);
 }

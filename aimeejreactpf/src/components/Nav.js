@@ -8,10 +8,9 @@ function Nav() {
             <div className="topnav" id="myTopnav">
                 <Link className="hvr-float-shadow" to="/">Home</Link>
                 <Link className="hvr-float-shadow" to="/about">About</Link>
-                <Link className="hvr-float-shadow" to="/contact">Contact</Link>
                 <Link className="hvr-float-shadow" to="/skillset">Skillset</Link>
-                <Link className="hvr-float-shadow" to="/resume">Resume</Link>
                 <Link className="hvr-float-shadow" to="/givingthanks">Giving Thanks</Link>
+                <Link className="hvr-float-shadow" to="/contact">Resume + Contact</Link>
             </div>
         </div>
     )

@@ -19,7 +19,7 @@ function Contact() {
                     <textarea className="form-control" rows="5"></textarea>
                 </div>
                 <button type="submit" className="btn btn-primary">Submit</button>
-                <img src={window.location.origin + '/logo512.png'} />
+                {/* <img src={window.location.origin + '/logo512.png'} /> */}
             </form>
         </div>
     )
