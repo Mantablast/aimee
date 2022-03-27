@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import React, { useState } from "react";
 import Skillchart from "../components/Skillchart";
-import Timeline from "../components/Timeline";
+import TimelineContainer from "../components/TimelineContainer";
 import Projects from "../components/Projects";
 
 function Home() {
@@ -19,16 +19,14 @@ function Home() {
                         />
                         <h4>Welcome to my portfolio</h4>
                     </div>
-                    
                 </div>
             </section>
             <section className="skill-blocks">
                 <div className="sk-container">
                     <div className="sk-container">
-                    </div>
                         <Skillchart />
-                        <Timeline />
                         <Projects />
+                    </div>
                 </div>
             </section>
 

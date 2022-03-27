@@ -191,17 +191,18 @@ body {
 
 /* Chart info */
 .chart-style, .timeline-chart {
-  width:40vw;
+  width:50vw;
   height:60vh;
 }
 .skill-blocks{
-  display: flex;
+  
   /* align-items: left; */
   height: 100em;
   /* padding-left:100px; */
   background: #0b0838;
   padding: 70px 0;
   transform: skew(0deg, -7deg) translateY(-85px);
+  
 }
 
 .skill-titles {
@@ -220,7 +221,8 @@ body {
 
 .sk-container {
   padding: 50px 100px;
-  transform: skew(0deg, 7deg);
+  transform: skew(0deg, 3.5deg);
+  
 }
 
 .top-pad {
@@ -240,7 +242,7 @@ body {
 .project-container {
   display: grid;
   height: 70vh;
-  grid-template-columns: 0.4fr 0.4fr;
+  grid-template-columns: 0.2fr 0.2fr;
   grid-template-rows: 0.8fr 0.8fr 0.8fr;
   grid-gap: 20px;
 }
@@ -301,3 +303,7 @@ body {
   background-position: 80%;
   z-index: 9999;
 } */
+
+.row {
+  flex-direction: row;
+}
