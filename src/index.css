@@ -1,30 +1,54 @@
+html, body, #root {
+  height: 100%;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.45) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.45) 1px, transparent 1px);
+  background-size: 106px 106px;
+  animation: grid-drift 90s ease-in-out infinite;
+  will-change: background-position, transform;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+
+.bg-grid-2 {
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.35) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.35) 1px, transparent 1px);
+  background-size: 16px 16px;
+  background-position: 28px 28px, 28px 28px;
+  animation: grid-drift-2 110s cubic-bezier(.4,0,.2,1) infinite;
+  will-change: background-position, transform;
 }
-a:hover {
-  color: #535bf2;
+
+
+@keyframes grid-drift {
+  0%   { background-position: 0px 0px, 0px 0px; transform: skew(0deg,0deg) scale(1); }
+  20%  { background-position: 40px 40px, 40px 40px; transform: skew(0.25deg,0.25deg) scale(1.01); }
+  50%  { background-position: 80px 80px, 80px 80px; transform: skew(-0.35deg,-0.35deg) scale(1.02); }
+  70%  { background-position: 120px 120px, 120px 120px; transform: skew(0.2deg,-0.2deg) scale(1.015); }
+  100% { background-position: 0px 0px, 0px 0px; transform: skew(0deg,0deg) scale(1); }
 }
+
+
+@keyframes grid-drift-2 {
+  0%   { background-position: 28px 28px, 28px 28px; transform: skew(0deg,0deg) scale(1); }
+  25%  { background-position: 68px 68px, 68px 68px; transform: skew(-0.25deg,0.25deg) scale(1.012); }
+  55%  { background-position: 108px 108px,108px 108px; transform: skew(0.35deg,-0.35deg) scale(1.018); }
+  85%  { background-position: 148px 148px,148px 148px; transform: skew(-0.2deg,-0.1deg) scale(1.01); }
+  100% { background-position: 28px 28px, 28px 28px; transform: skew(0deg,0deg) scale(1); }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  [style*="url(#grid-warp)"] { filter: none !important; }
+}
+
+
 
 body {
   margin: 0;
@@ -33,12 +57,25 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
-
+#root {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  text-align: initial;
+}
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
-
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -57,11 +94,10 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
-
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: ##4915b0;
+    background-color: ##57f2ed;
   }
   a:hover {
     color: #747bff;
@@ -69,4 +105,29 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+/* Blinky */
+@keyframes caret {
+  0%, 40% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.animate-caret { animation: caret 1s steps(1, end) infinite; }
+
+/* drift and warp */
+@keyframes grid-drift {
+  0%   { background-position: 0px 0px, 0px 0px; transform: skew(0deg,0deg) scale(1); }
+  25%  { background-position: 60px 60px, 60px 60px; transform: skew(0.3deg,0.3deg) scale(1.02); }
+  50%  { background-position: 120px 120px, 120px 120px; transform: skew(0deg,0deg) scale(1.01); }
+  75%  { background-position: 60px 60px, 60px 60px; transform: skew(-0.3deg,-0.3deg) scale(1.02); }
+  100% { background-position: 0px 0px, 0px 0px; transform: skew(0deg,0deg) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [style*="grid-drift"] { animation: none !important; }
+}
+
+.debug {
+  opacity: 0.25 !important;
+  mix-blend-mode: normal !important;
 }
