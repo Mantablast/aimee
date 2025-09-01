@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-
+import FeatureProjects from "./FeatureProjects";
 const PHRASES = [
   "🍄 test pipelines",
   "📊 data quality tools",
@@ -20,7 +20,7 @@ const PHRASES = [
 ];
 
 const NAV = [
-  { href: "#projects", label: "Projects" },
+  { href: "#projects", label: "All Projects" },
   { href: "#about",    label: "About" },
   { href: "#contact",  label: "Contact" },
 ];
@@ -84,6 +84,10 @@ export default function Landing() {
         </nav>
       </header>
 
+      <div className="pointer-events-auto fixed top-1/2 right-0 z-30 transform -translate-y-1/2 w-full max-w-md pr-4 hidden lg:block">
+        <FeatureProjects />
+      </div>
+
       {/* typing up tasks */}
       <div className="relative z-10 mx-auto flex min-h-screen w-full items-center">
         <div className="w-full px-6 md:px-12">
@@ -100,6 +104,8 @@ export default function Landing() {
       </div>
 
 
+        {/* name */}
+
       <div className="pointer-events-none absolute bottom-8 left-6 z-10 px-2 sm:left-10 sm:bottom-10">
         <h1 className="select-none text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 via-sky-400 to-emerald-400 drop-shadow-[0_0_24px_rgba(56,189,248,0.35)]">
           Aimee&nbsp;J
@@ -114,7 +120,7 @@ function DarkBackdrop() {
     <div aria-hidden className="absolute inset-0 -z-10">
       <div className="absolute inset-0 bg-[radial-gradient(1200px_600px_at_20%_20%,rgba(99,102,241,0.25),transparent_60%),radial-gradient(900px_500px_at_80%_30%,rgba(217,70,239,0.2),transparent_55%),linear-gradient(180deg,rgba(2,6,23,1)_0%,rgba(2,6,23,1)_60%,rgba(10,10,26,1)_100%)]" />
 
-      {/* hologram grids  */}
+      {/* grids  */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ filter: "url(#grid-warp)" }}
@@ -168,7 +174,3 @@ function DarkBackdrop() {
     </div>
   );
 }
-
-
-
-
