@@ -4,15 +4,15 @@ export default function FeatureProjects() {
     "KronoDrop",
     "Best-Dressed",
     "DragonDrop",
-    "GameChanger",
+    "Tailored Motivator",
   ];
   const projectDescriptions = [
     "A brief description of Project One. This project does amazing things and solves problems.",
     "A brief description of Project Two. Some info about best dressed.",
     "A brief description of Project Three. Will likely swap this out for something else.",
-    "A brief description of Project Four. A game changer.  LOL",
+    "A simple chrome extension that provides tailored motivational quotes based on user preferences.",
   ];
-  const projectLinks = ["#", "#", "#", "#"];
+  const projectLinks = ["#", "#", "#", "https://github.com/Mantablast/tailored-motivator"];
   const projectImages = [
     "https://placehold.co/100x100",
     "https://placehold.co/100x100",
@@ -22,10 +22,15 @@ export default function FeatureProjects() {
 
   return (
     <section id="projects" className="bg-transparent p-0 m-0">
-      <div className="bg-transparent">
-        <h2 className="font-bold text-right text-teal-500 dark:text-white mb-4">
+      <div className="flex justify-start">
+        <h2
+          className="font-bold text-teal-500 dark:text-white mb-4"
+          style={{ marginLeft: "1px" }}
+        >
           Featured Projects
         </h2>
+      </div>
+      <div className="bg-transparent w-full flex justify-center">
         <div className="flex flex-col items-end gap-6">
           {projectTitles.map((title, idx) => (
             <div

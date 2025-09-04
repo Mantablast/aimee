@@ -89,20 +89,19 @@ export default function Landing() {
       </div>
 
       {/* typing up tasks */}
-      <div className="relative z-10 mx-auto flex min-h-screen w-full items-center">
+      <div className="relative z-40 mx-auto flex min-h-screen w-full items-center pr-[350px] lg:pr-[350px]">
         <div className="w-full px-6 md:px-12">
           <div className="max-w-3xl">
             <p className="mb-2 text-sm uppercase tracking-[0.2em] text-white/60">
-            has been busy building
+              has been busy building
             </p>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-white/90">
-              <span className="align-middle whitespace-nowrap">{typed}</span>
+              <span className="align-middle">{typed}</span>
               <span className="ml-1 inline-block h-[1em] w-[2px] translate-y-[-2px] animate-caret bg-white/80" />
             </h2>
           </div>
         </div>
       </div>
-
 
         {/* name */}
 
