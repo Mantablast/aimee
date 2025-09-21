@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import FeatureProjects from "./FeatureProjects";
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+
+
 const PHRASES = [
   "🍄 test pipelines",
   "📊 data quality tools",
@@ -20,9 +23,11 @@ const PHRASES = [
 ];
 
 const NAV = [
-  { href: "#projects", label: "All Projects" },
-  { href: "#about",    label: "About" },
-  { href: "#contact",  label: "Contact" },
+  { href: "https://github.com/Mantablast", label: "All Projects" },
+  { href: "/about",    label: "About" },
+  { href: "/certsawards",  label: "Certs / Awards" },
+  { href: "/resume",  label: "The Res" },
+  { href: "/contact",  label: "Contact" }
 ];
 
 
@@ -70,19 +75,6 @@ export default function Landing() {
   return (
     <section className="relative min-h-screen w-full overflow-hidden text-white">
       <DarkBackdrop />
-      <header className="pointer-events-auto absolute inset-x-0 top-0 z-20">
-        <nav className="mx-auto flex h-16 items-center justify-center gap-8 px-6">
-          {NAV.map((n) => (
-            <a
-              key={n.href}
-              href={n.href}
-              className="text-sm font-medium text-white/80 hover:text-white transition"
-            >
-              {n.label}
-            </a>
-          ))}
-        </nav>
-      </header>
 
       <div className="pointer-events-auto fixed top-1/2 right-0 z-30 transform -translate-y-1/2 w-full max-w-md pr-4 hidden lg:block">
         <FeatureProjects />

@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-{/* I will keep the older version for a while just in case */}
+import { Link } from "react-router-dom"; // ← only Link is needed
+
+// I will keep the older version for a while just in case
 const ROLES = [
   "award-winning data quality analyst",
   "tech pipeline builder",
@@ -16,7 +18,6 @@ const HOW_I_WORK = [
   "find silent errors and make them known",
   "retrieve what devs need to do their work",
 ];
-
 
 function useCycleWords(words, intervalMs = 2200) {
   const list = useMemo(() => words.filter(Boolean), [words]);
@@ -90,7 +91,7 @@ export default function Hero() {
         <nav className="mt-2 flex flex-wrap items-center justify-center gap-3 text-sm text-zinc-600 dark:text-zinc-400">
           <HoverLink href="#projects">projects</HoverLink>
           <Dot />
-          <HoverLink href="#about">about</HoverLink>
+          <Link to="/about">About</Link>
           <Dot />
           <HoverLink href="#contact">contact</HoverLink>
         </nav>
@@ -137,7 +138,6 @@ function HoverLink({ href, children }) {
   );
 }
 
-
 function GradientBackdrop() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
@@ -170,7 +170,7 @@ function ParallaxBits() {
     <div aria-hidden className="absolute inset-0 -z-10">
       {bits.map((b, i) => (
         <motion.div
-          key={i}
+          key={`${b.x}-${b.y}`} // ← stable key from coords
           className="absolute h-24 w-24 rounded-3xl bg-gradient-to-br from-fuchsia-400/40 via-sky-400/40 to-emerald-400/40 blur-xl"
           style={{ left: b.x, top: b.y }}
           animate={{ y: [0, -10, 0], x: [0, 6, 0] }}
