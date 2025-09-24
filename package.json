@@ -13,7 +13,9 @@
     "framer-motion": "^12.23.12",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-github-calendar": "^4.5.10",
     "react-router-dom": "^7.9.1",
+    "react-tooltip": "^5.29.1",
     "strip-comments": "^2.0.1"
   },
   "devDependencies": {

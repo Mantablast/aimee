@@ -7,7 +7,7 @@ import Contact from "./pages/Contact";
 
 const NAV = [
   { href: "https://github.com/Mantablast", label: "All Projects" },
-  { href: "/about",        label: "About" },
+  { href: "#about",        label: "About" },
   { href: "/certsawards",  label: "Certs / Awards" },
   { href: "/contact",      label: "Contact" },
 ];

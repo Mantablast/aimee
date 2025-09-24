@@ -1,10 +1,41 @@
+import GitHubCalendar from "react-github-calendar";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+
 export default function About() {
+  const currentYear = new Date().getFullYear();
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">About Me</h1>
-      <p className="mb-2">Hello! I'm Aimee, a passionate developer with a love for creating innovative solutions…</p>
-      <p className="mb-2">When I'm not coding, you can find me…</p>
-      <p>Feel free to reach out if you'd like to collaborate or just say hi!</p>
-    </div>
+    <section id="about" className="mx-auto max-w-3xl px-6 py-12">
+      <div className="mt-8 rounded-2xl border border-white/10 p-4 bg-white/5 shadow-lg backdrop-blur">
+        <h3 className="mb-3 text-sm uppercase tracking-wide text-white/60">
+          Recent GitHub activity
+        </h3>
+
+        {/* two-up layout */}
+        <div className="grid gap-6 md:grid-cols-2 items-start">
+          {/* calendar column */}
+          <div className="overflow-auto md:overflow-visible md:pr-2 shrink-0">
+            <GitHubCalendar
+              username="Mantablast"
+              year={currentYear}
+              blockSize={12}
+              blockMargin={4}
+              colorScheme="dark"
+              fontSize={12}
+            />
+          </div>
+
+          {/* languages image column */}
+          <div className="flex items-center justify-center">
+            <img
+              src="https://github-readme-stats.vercel.app/api/top-langs/?username=Mantablast&layout=compact&theme=transparent"
+              alt="Top languages"
+              className="max-w-full h-auto"
+            />
+          </div>
+        </div>
+
+        <ReactTooltip html />
+      </div>
+    </section>
   );
 }

@@ -81,7 +81,7 @@ export default function Landing() {
             </p>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-white/90">
               {/* keep this span narrow enough not to crash into the right column */}
-              <span className="align-middle whitespace-nowrap max-w-[48ch] overflow-hidden text-ellipsis block">
+              <span className="align-middle whitespace-wrap max-w-[48ch] overflow-hidden text-ellipsis block">
                 {typed}
               </span>
               <span className="ml-1 inline-block h-[1em] w-[2px] translate-y-[-2px] animate-caret bg-white/80" />
