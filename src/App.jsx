@@ -50,7 +50,6 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Landing />} />
-          <Route path="/about" element={<About />} />
           <Route path="/certsawards" element={<CertsAwards />} />
           <Route path="/contact" element={<Contact />} />
         </Route>

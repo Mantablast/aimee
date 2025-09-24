@@ -1,5 +1,4 @@
 export default function FeatureProjects() {
-  const projectMargins = [160, 120, 85, 50];
   const projectTitles = [
     "KronoDrop",
     "Best-Dressed",
@@ -20,6 +19,9 @@ export default function FeatureProjects() {
     "https://placehold.co/100x100",
   ];
 
+  // Optional tiny left-indent per card (stays INSIDE the rail)
+  const INDENT = ["pl-1", "pl-5", "pl-9", "pl-11"];
+
   return (
     <section id="projects" className="bg-transparent p-0 m-0">
       <div className="flex justify-start">
@@ -30,36 +32,38 @@ export default function FeatureProjects() {
           Featured Projects
         </h2>
       </div>
-      <div className="bg-transparent w-full flex justify-center">
-        <div className="flex flex-col items-end gap-6">
-          {projectTitles.map((title, idx) => (
-            <div
-              key={title}
-              className="bg-white/5 dark:bg-white/5 rounded-lg shadow-lg overflow-hidden backdrop-blur max-w-md w-full h-30 flex flex-row"
-              style={{ marginRight: `${projectMargins[idx]}px` }}
-            >
-              <div className="flex-1 flex flex-col justify-center p-3 text-white">
-                <h3 className="text-sm font-semibold mb-2">{title}</h3>
-                <p className="mb-1 text-xs">
-                  {projectDescriptions[idx]}
-                </p>
-                <a
-                  href={projectLinks[idx]}
-                  className="text-blue-300 hover:underline text-xs"
-                >
-                  Repo
-                </a>
-              </div>
-              <div className="flex-shrink-0 h-full w-32 flex items-center justify-center">
+
+      {/* Rail-safe stack: no items-end, no marginRight */}
+      <div className="w-full flex flex-col gap-4">
+        {projectTitles.map((title, idx) => (
+          <article
+            key={title}
+            className={`w-full ${INDENT[idx]} group`}
+          >
+            <div className="relative w-full overflow-hidden rounded-xl bg-white/5 dark:bg-white/5 ring-1 ring-white/10 backdrop-blur
+                            transition-transform duration-300 group-hover:-translate-y-0.5">
+              <div className="flex items-center gap-3 p-3">
                 <img
                   src={projectImages[idx]}
                   alt={title}
-                  className="object-cover rounded-r-lg h-20 w-20"
+                  className="h-16 w-16 flex-none rounded-md object-cover"
                 />
+                <div className="min-w-0">
+                  <h3 className="text-sm font-semibold text-white truncate">{title}</h3>
+                  <p className="mt-1 text-xs text-white/80">
+                    {projectDescriptions[idx]}
+                  </p>
+                  <a
+                    href={projectLinks[idx]}
+                    className="mt-2 inline-block text-xs text-blue-300 hover:underline"
+                  >
+                    Repo
+                  </a>
+                </div>
               </div>
             </div>
-          ))}
-        </div>
+          </article>
+        ))}
       </div>
     </section>
   );

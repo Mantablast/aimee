@@ -15,6 +15,7 @@ html, body, #root {
 }
 
 
+
 .bg-grid-2 {
   background-image:
     linear-gradient(to right, rgba(255,255,255,0.35) 1px, transparent 1px),

@@ -91,7 +91,7 @@ export default function Hero() {
         <nav className="mt-2 flex flex-wrap items-center justify-center gap-3 text-sm text-zinc-600 dark:text-zinc-400">
           <HoverLink href="#projects">projects</HoverLink>
           <Dot />
-          <Link to="/about">About</Link>
+          <HoverLink href="#about">About</HoverLink>
           <Dot />
           <HoverLink href="#contact">contact</HoverLink>
         </nav>
