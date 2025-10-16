@@ -1,22 +1,23 @@
 export default function FeatureProjects() {
   const projectTitles = [
+    "Best-Dressed - New Shopping Filter",
     "KronoDrop",
-    "Best-Dressed",
     "DragonDrop",
     "Tailored Motivator",
   ];
   const projectDescriptions = [
-    "A brief description of Project One. This project does amazing things and solves problems.",
-    "A brief description of Project Two. Some info about best dressed.",
+    "Sort shopping filter items that are most important to you and the app will keep score, showing the top matches for your needs.",
+    "Pick a date range and drop a halo on the map.  See events, save events.  Time is precious, plot your course.",
     "A brief description of Project Three. Will likely swap this out for something else.",
     "A simple chrome extension that provides tailored motivational quotes based on user preferences.",
   ];
-  const projectLinks = ["#", "#", "#", "https://github.com/Mantablast/tailored-motivator"];
+  const projectLinks = ["https://github.com/Mantablast/best-dressed", "Coming soon", "#", "https://github.com/Mantablast/tailored-motivator"];
+  const projectDemoLinks = ["https://best-dressed.vercel.app/", "Coming soon", "#", "#"];
   const projectImages = [
+    "../../public/bestdressedicon.jpg",
+    "../../public/kronodrop.png",
     "https://placehold.co/100x100",
-    "https://placehold.co/100x100",
-    "https://placehold.co/100x100",
-    "https://placehold.co/100x100",
+    "../../public/icon48.png",
   ];
 
   // Optional tiny left-indent per card (stays INSIDE the rail)
@@ -53,12 +54,21 @@ export default function FeatureProjects() {
                   <p className="mt-1 text-xs text-white/80">
                     {projectDescriptions[idx]}
                   </p>
+                  <div className="mt-1 flex gap-2">
                   <a
-                    href={projectLinks[idx]}
+                    href={projectLinks[idx]} target="_blank"
                     className="mt-2 inline-block text-xs text-blue-300 hover:underline"
                   >
                     Repo
                   </a>
+                  <p> </p>
+                  <a
+                    href={projectDemoLinks[idx]} target="_blank"
+                    className="mt-2 inline-block text-xs text-blue-300 hover:underline"
+                  >
+                    Demo
+                  </a>
+                  </div>
                 </div>
               </div>
             </div>

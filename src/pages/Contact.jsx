@@ -1,21 +1,29 @@
 // src/pages/Contact.jsx
 import { useEffect, useRef } from "react";
+import PageBackdrop from "../components/PageBackdrop";
 
 export default function Contact() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-zinc-900 text-zinc-50">
-      <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4">
-        Let’s Connect — Punch the Bricks 👊
-      </h1>
-      <p className="opacity-80 mb-3 text-sm">
-        Controls: ←/→ or A/D to move • Space to jump
-      </p>
-      <ContactGame />
-      <p className="mt-4 text-xs opacity-70">
-        Tip: Jump so your head hits the underside of a brick to spawn a social icon.
-        Touch an icon to open the link in a new tab.
-      </p>
-    </div>
+    <>
+      <PageBackdrop />
+      <div className="relative z-10 flex min-h-screen w-full items-center justify-center px-6 py-16 text-zinc-50">
+        <div className="w-full max-w-3xl rounded-3xl border border-white/10 bg-black/60 p-6 text-center shadow-2xl backdrop-blur">
+          <h1 className="mb-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
+            Let’s Connect — Punch the Bricks 👊
+          </h1>
+          <p className="mb-5 text-sm opacity-80">
+            Controls: ←/→ or A/D to move • Space to jump
+          </p>
+          <div className="flex justify-center">
+            <ContactGame />
+          </div>
+          <p className="mt-5 text-xs opacity-70">
+            Tip: Knock a brick from below to pop out a social icon, then touch it to open the link
+            in a new tab.
+          </p>
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -58,10 +66,10 @@ function ContactGame() {
 
     // --- socials to spawn from bricks ---
     const SOCIALS = [
-      { label: "in", color: "#0a66c2", url: "https://www.linkedin.com/in/yourprofile" },
-      { label: "gh", color: "#ffffff", url: "https://github.com/yourprofile" },
-      { label: "ig", color: "#e1306c", url: "https://instagram.com/yourprofile" },
-      { label: "cr", color: "#00b1b2", url: "https://www.credly.com/users/yourprofile" },
+      { label: "in", color: "#0a66c2", url: "https://www.linkedin.com/in/aimeejesso/" },
+      { label: "gh", color: "#ffffff", url: "https://github.com/Mantablast" },
+      { label: "ig", color: "#e1306c", url: "https://www.instagram.com/aimeeunmuted/" },
+      { label: "cr", color: "#00b1b2", url: "https://www.credly.com/badges/782fa904-895f-482e-9e2c-c85eb03c8c72/public_url" },
       { label: "cp", color: "#000000", url: "https://codepen.io/yourprofile" },
     ];
 
@@ -270,31 +278,128 @@ function roundRect(ctx, x, y, w, h, r, fill) {
 
 // lil' suit person sprite
 function drawSuitDude(ctx, x, y, w, h) {
-  // body
-  ctx.fillStyle = "#6d727dff";
-  ctx.fillRect(x, y, w, h);
-  // head
-  ctx.fillStyle = "#fcd34d";
-  ctx.fillRect(x + w / 4, y - h * 0.35, w / 2, h * 0.35);
-  // eyes
-  ctx.fillStyle = "#000104ff";
-  ctx.fillRect(x + w / 5.5 + 3, y - h * 0.2, 3, 1);
-  ctx.fillRect(x + (w * 3.5) / 4 - 6, y - h * 0.2, 3, 1);
-  // right arm
-  ctx.fillStyle = "#000104ff";
-  ctx.fillRect(x + w - 4, y + 4, 2, h / 2);
-  // left arm
-  ctx.fillRect(x, y + 4, 2, h / 2);
-  // right leg
-  ctx.fillRect(x + w - 2, y + h - 4, 6, 4);
-  // left leg
-  ctx.fillRect(x, y + h - 4, 6, 4);
-  // tie
-  ctx.fillStyle = "#ef4444";
+  ctx.save();
+  ctx.translate(x, y);
+
+  const jacketColor = "#111827";
+  const shirtColor = "#e5e7eb";
+  const accentColor = "#1f2937";
+  const tieColor = "#b91c1c";
+  const skinColor = "#fbe7c6";
+  const hairColor = "#2f2e41";
+
+  const headH = h * 0.45;
+  const headW = w * 0.62;
+  const headX = (w - headW) / 2;
+  const headY = -headH + h * 0.08;
+
+  // jacket 
+  ctx.fillStyle = jacketColor;
+  roundRect(ctx, 0, 0, w, h, Math.min(6, w * 0.25), true);
+
+  // arms (slight offset to sell jacket sleeves)
+  ctx.fillRect(-w * 0.18, h * 0.18, w * 0.2, h * 0.52);
+  ctx.fillRect(w * 0.98, h * 0.18, w * 0.2, h * 0.52);
+
+  // hands
+  ctx.fillStyle = skinColor;
+  ctx.fillRect(-w * 0.14, h * 0.64, w * 0.14, h * 0.15);
+  ctx.fillRect(w, h * 0.64, w * 0.14, h * 0.15);
+
+  // shirt panel
+  ctx.fillStyle = shirtColor;
+  ctx.fillRect(w * 0.32, h * 0.04, w * 0.36, h * 0.56);
+
+  // lapels
+  ctx.fillStyle = accentColor;
   ctx.beginPath();
-  ctx.moveTo(x + w / 2, y + 4);
-  ctx.lineTo(x + w / 2 - 3, y + 10);
-  ctx.lineTo(x + w / 2 + 3, y + 10);
+  ctx.moveTo(w * 0.05, h * 0.08);
+  ctx.lineTo(w * 0.32, h * 0.58);
+  ctx.lineTo(w * 0.18, h * 0.6);
+  ctx.lineTo(w * 0.02, h * 0.3);
   ctx.closePath();
   ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(w * 0.95, h * 0.08);
+  ctx.lineTo(w * 0.68, h * 0.58);
+  ctx.lineTo(w * 0.82, h * 0.6);
+  ctx.lineTo(w * 0.98, h * 0.3);
+  ctx.closePath();
+  ctx.fill();
+
+  // tie knot + blade
+  ctx.fillStyle = tieColor;
+  ctx.beginPath();
+  ctx.moveTo(w * 0.5, h * 0.08);
+  ctx.lineTo(w * 0.45, h * 0.18);
+  ctx.lineTo(w * 0.5, h * 0.58);
+  ctx.lineTo(w * 0.55, h * 0.18);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillRect(w * 0.46, h * 0.02, w * 0.08, h * 0.12);
+
+  // belt
+  ctx.fillStyle = accentColor;
+  ctx.fillRect(w * 0.12, h * 0.64, w * 0.76, h * 0.08);
+  ctx.fillStyle = "#facc15";
+  ctx.fillRect(w * 0.44, h * 0.65, w * 0.12, h * 0.06);
+
+  // trousers
+  ctx.fillStyle = jacketColor;
+  ctx.fillRect(w * 0.12, h * 0.7, w * 0.3, h * 0.42);
+  ctx.fillRect(w * 0.58, h * 0.7, w * 0.3, h * 0.42);
+  ctx.fillStyle = "#1f2937";
+  ctx.fillRect(w * 0.45 - w * 0.03, h * 0.72, w * 0.06, h * 0.3);
+
+
+  // shoes
+  ctx.fillStyle = "#0f172a";
+  ctx.fillRect(w * 0.06, h * 1.02, w * 0.36, h * 0.14);
+  ctx.fillRect(w * 0.58, h * 1.02, w * 0.36, h * 0.14);
+
+  // neck
+  ctx.fillStyle = skinColor;
+  ctx.fillRect(w * 0.44, -headH * 0.12 + h * 0.05, w * 0.12, headH * 0.22);
+
+  // head
+  ctx.fillStyle = skinColor;
+  ctx.beginPath();
+  ctx.ellipse(
+    headX + headW / 2,
+    headY + headH / 2,
+    headW / 2,
+    headH / 2,
+    0,
+    0,
+    Math.PI * 2
+  );
+  ctx.fill();
+
+  // hair
+  ctx.fillStyle = hairColor;
+  ctx.beginPath();
+  ctx.ellipse(headX + headW / 2, headY + headH * 0.35, headW / 2, headH * 0.6, 0, Math.PI, 0);
+  ctx.fill();
+  ctx.fillRect(headX + headW * 0.15, headY + headH * 0.1, headW * 0.6, headH * 0.22);
+
+  // eyes
+  ctx.fillStyle = "#111827";
+  const eyeW = w * 0.08;
+  const eyeH = headH * 0.12;
+  const eyeY = headY + headH * 0.48;
+  ctx.fillRect(headX + headW * 0.28, eyeY, eyeW, eyeH);
+  ctx.fillRect(headX + headW * 0.64, eyeY, eyeW, eyeH);
+
+  // brow
+  ctx.fillRect(headX + headW * 0.2, eyeY - eyeH * 0.6, headW * 0.6, eyeH * 0.35);
+
+  // smile
+  ctx.strokeStyle = "#d97706";
+  ctx.lineWidth = Math.max(1, h * 0.03);
+  ctx.beginPath();
+  ctx.arc(headX + headW / 2, headY + headH * 0.7, headW * 0.22, 0, Math.PI, false);
+  ctx.stroke();
+
+  ctx.restore();
 }

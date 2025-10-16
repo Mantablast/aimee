@@ -1,7 +1,8 @@
 import GitHubCalendar from "react-github-calendar";
 import { Tooltip as ReactTooltip } from "react-tooltip";
+import PageBackdrop from "../components/PageBackdrop";
 
-export default function About() {
+export function AboutContent() {
   const currentYear = new Date().getFullYear();
   return (
     <section id="about" className="mx-auto max-w-3xl px-6 py-12">
@@ -37,5 +38,16 @@ export default function About() {
         <ReactTooltip html />
       </div>
     </section>
+  );
+}
+
+export default function About() {
+  return (
+    <>
+      <PageBackdrop />
+      <main className="relative z-10 flex min-h-screen w-full items-center justify-center px-6 py-24">
+        <AboutContent />
+      </main>
+    </>
   );
 }

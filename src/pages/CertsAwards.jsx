@@ -1,55 +1,29 @@
+import PageBackdrop from "../components/PageBackdrop";
 
 export default function CertsAwards() {
   return (
-    <section id="certsawards" className="bg-transparent p-0 m-0 min-h-screen">
-      <div className="flex justify-start">
-        <h2
-          className="font-bold text-teal-500 dark:text-white mb-4"
-          style={{ marginLeft: "1px" }}
+    <>
+      <PageBackdrop />
+      <main className="relative z-10 flex min-h-screen w-full items-start justify-center px-6 py-24">
+        <section
+          id="certsawards"
+          className="w-full max-w-3xl rounded-2xl border border-white/10 bg-white/5 px-6 py-8 text-white shadow-lg backdrop-blur"
         >
-          Certifications & Awards
-        </h2>
-      </div>
-      <div className="bg-transparent w-full flex justify-center">
-        <div className="flex flex-col items-start gap-6 text-white">
-          <div className="bg-white/5 dark:bg-white/5 rounded-lg shadow-lg overflow-hidden backdrop-blur max-w-md w-full h-30 flex flex-row p-4">
-            <div className="flex-1 flex flex-col justify-center text-white">
-              <h3 className="text-sm font-semibold mb-2">AWS Certified Solutions Architect – Associate</h3>
-              <p className="mb-1 text-xs">
-                Amazon Web Services (AWS) - Issued Mar 2023
-              </p>
-              <a
-                href="https://www.credly.com/badges/1f4b8e6e-2d3a-4c9f-9c8d-8f8e8f8e8f8e/public_url"
-                className="text-blue-300 hover:underline text-xs"
-              >
-                Verify Credential
-              </a>
-            </div>
-          </div>
-          <div className="bg-white/5 dark:bg-white/5 rounded-lg shadow-lg overflow-hidden backdrop-blur max-w-md w-full h-30 flex flex-row p-4">
-            <div className="flex-1 flex flex-col justify-center text-white">
-              <h3 className="text-sm font-semibold mb-2">Google Data Analytics Professional Certificate</h3>
-              <p className="mb-1 text-xs">
-                Coursera - Issued Jan 2023
-              </p>
-              <a
-                href="https://www.coursera.org/account/accomplishments/professional-cert/XYZ123"
-                className="text-blue-300 hover:underline text-xs"
-              >
-                Verify Credential
-              </a>
-            </div>
-          </div>
-          <div className="bg-white/5 dark:bg-white/5 rounded-lg shadow-lg overflow-hidden backdrop-blur max-w-md w-full h-30 flex flex-row p-4">
-            <div className="flex-1 flex flex-col justify-center text-white">
-              <h3 className="text-sm font-semibold mb-2">Dean's List, ya right</h3>
-              <p className="mb-1 text-xs">
-                University of Example - Awarded 2020, 2021
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+          <header className="mb-6">
+            <h2 className="text-2xl font-semibold tracking-tight text-white/90">
+              Certifications &amp; Awards
+            </h2>
+            <p className="mt-2 text-sm text-white/60">
+              Highlighting recognitions that reflect impact, growth, and curiosity.
+            </p>
+          </header>
+
+          <p className="text-sm text-white/70">
+            Add your certifications and awards content here when you are ready. This card-style
+            layout sits on the same animated backdrop used throughout the site.
+          </p>
+        </section>
+      </main>
+    </>
   );
 }
