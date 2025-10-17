@@ -1,33 +1,95 @@
 // src/pages/Contact.jsx
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import PageBackdrop from "../components/PageBackdrop";
 
+const SOCIALS = [
+  {
+    label: "in",
+    color: "#0a66c2",
+    url: "https://www.linkedin.com/in/aimeejesso/",
+    imageSrc: "/linkedin-icon.png",
+  },
+  {
+    label: "gh",
+    color: "#ffffff",
+    url: "https://github.com/Mantablast",
+    imageSrc: "/github-logo.png",
+  },
+  {
+    label: "ig",
+    color: "#e1306c",
+    url: "https://www.instagram.com/aimeeunmuted/",
+    imageSrc: "/insta-icon.png",
+  },
+  {
+    label: "cr",
+    color: "#00b1b2",
+    url: "https://www.credly.com/badges/782fa904-895f-482e-9e2c-c85eb03c8c72/public_url",
+    imageSrc: "/credly-icon.png",
+  },
+];
+
 export default function Contact() {
+  const [unlocked, setUnlocked] = useState([]);
+
+  const handleUnlock = useCallback((icon) => {
+    setUnlocked((prev) => {
+      if (prev.some((entry) => entry.url === icon.url)) return prev;
+      return [...prev, icon];
+    });
+  }, []);
+
   return (
     <>
       <PageBackdrop />
       <div className="relative z-10 flex min-h-screen w-full items-center justify-center px-6 py-16 text-zinc-50">
         <div className="w-full max-w-3xl rounded-3xl border border-white/10 bg-black/60 p-6 text-center shadow-2xl backdrop-blur">
           <h1 className="mb-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Let’s Connect — Punch the Bricks 👊
+            Punch some Bricks 👊
           </h1>
           <p className="mb-5 text-sm opacity-80">
             Controls: ←/→ or A/D to move • Space to jump
           </p>
           <div className="flex justify-center">
-            <ContactGame />
+            <ContactGame onUnlock={handleUnlock} />
           </div>
           <p className="mt-5 text-xs opacity-70">
             Tip: Knock a brick from below to pop out a social icon, then touch it to open the link
             in a new tab.
           </p>
+          {unlocked.length > 0 && (
+            <footer className="mt-6 border-t border-white/10 pt-4">
+              <p className="text-xs uppercase tracking-[0.3em] text-white/50">
+                Unlocked
+              </p>
+              <div className="mt-3 flex flex-wrap justify-center gap-3">
+                {unlocked.map((icon) => (
+                  <a
+                    key={icon.url}
+                    href={icon.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-black/70 shadow-lg shadow-black/40 transition hover:scale-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70"
+                    aria-label={`Open ${icon.label.toUpperCase()} link`}
+                  >
+                    <img
+                      src={icon.imageSrc}
+                      alt={`${icon.label} icon`}
+                      className="h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  </a>
+                ))}
+              </div>
+            </footer>
+          )}
         </div>
       </div>
     </>
   );
 }
 
-function ContactGame() {
+function ContactGame({ onUnlock }) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -35,8 +97,8 @@ function ContactGame() {
     const ctx = canvas.getContext("2d");
 
     // --- world ---
-    const W = (canvas.width = 720);
-    const H = (canvas.height = 380);
+    const W = (canvas.width = 520);
+    const H = (canvas.height = 270);
     const GROUND_Y = H - 48;
     const GRAV = 0.7;
     const FRICTION = 0.86;
@@ -55,29 +117,26 @@ function ContactGame() {
       onGround: true,
     };
 
-    // --- bricks (5) ---
+    // --- bricks (4) ---
     const bricks = [
-      { x: 200, y: 210, w: 42, h: 42, used: false },
-      { x: 250, y: 210, w: 42, h: 42, used: false },
-      { x: 300, y: 210, w: 42, h: 42, used: false },
-      { x: 350, y: 210, w: 42, h: 42, used: false },
-      { x: 400, y: 210, w: 42, h: 42, used: false },
+      { x: 200, y: 90, w: 42, h: 42, used: false },
+      { x: 250, y: 90, w: 42, h: 42, used: false },
+      { x: 300, y: 90, w: 42, h: 42, used: false },
+      { x: 350, y: 90, w: 42, h: 42, used: false }
     ];
 
-    // --- socials to spawn from bricks ---
-    const SOCIALS = [
-      { label: "in", color: "#0a66c2", url: "https://www.linkedin.com/in/aimeejesso/" },
-      { label: "gh", color: "#ffffff", url: "https://github.com/Mantablast" },
-      { label: "ig", color: "#e1306c", url: "https://www.instagram.com/aimeeunmuted/" },
-      { label: "cr", color: "#00b1b2", url: "https://www.credly.com/badges/782fa904-895f-482e-9e2c-c85eb03c8c72/public_url" },
-      { label: "cp", color: "#000000", url: "https://codepen.io/yourprofile" },
-    ];
+    // --- icon cache ---
+    const iconCache = new Map();
+    for (const social of SOCIALS) {
+      const img = new Image();
+      img.src = social.imageSrc;
+      iconCache.set(social.label, img);
+    }
 
     // --- active floating items ---
-    const items = []; // {x,y,vx,vy,label,color,url,alive}
+    const items = []; // {x,y,vx,vy,label,url,alive,image,imageSrc,color}
 
     // helpers
-    const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
     const rectsOverlap = (a, b) =>
       a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
 
@@ -96,7 +155,9 @@ function ContactGame() {
     window.addEventListener("keyup", up);
 
     function spawnItem(fromBrick, indexHint = 0) {
-      const pick = SOCIALS[(indexHint + items.length) % SOCIALS.length];
+      const pick = SOCIALS[indexHint % SOCIALS.length];
+      const iconImage = iconCache.get(pick.label);
+      const resolvedImageSrc = iconImage?.src ?? pick.imageSrc;
       items.push({
         x: fromBrick.x + fromBrick.w / 2,
         y: fromBrick.y - 8,
@@ -106,7 +167,11 @@ function ContactGame() {
         color: pick.color,
         url: pick.url,
         alive: true,
+        icon: iconImage,
+        imageSrc: resolvedImageSrc,
       });
+      if (typeof onUnlock === "function")
+        onUnlock({ ...pick, imageSrc: resolvedImageSrc });
     }
 
     let raf;
@@ -117,8 +182,14 @@ function ContactGame() {
       player.vx *= FRICTION;
       player.x += player.vx;
 
-      // world bounds
-      player.x = clamp(player.x, 8, W - player.w - 8);
+      // wrap horizontally when exiting the playfield
+      if (player.x > W) {
+        const overflow = player.x - W;
+        player.x = -player.w + overflow;
+      } else if (player.x + player.w < 0) {
+        const overflow = (player.x + player.w) * -1;
+        player.x = W - overflow;
+      }
 
       // gravity / vertical
       player.vy += GRAV;
@@ -190,7 +261,13 @@ function ContactGame() {
 
         // collect?
         const playerRect = { x: player.x, y: player.y, w: player.w, h: player.h };
-        const itemRect = { x: it.x - 10, y: it.y - 10, w: 20, h: 20 };
+        const pickupRadius = 14;
+        const itemRect = {
+          x: it.x - pickupRadius,
+          y: it.y - pickupRadius,
+          w: pickupRadius * 2,
+          h: pickupRadius * 2,
+        };
         if (rectsOverlap(playerRect, itemRect)) {
           it.alive = false;
           window.open(it.url, "_blank", "noopener,noreferrer");
@@ -213,11 +290,7 @@ function ContactGame() {
 
       // bricks
       for (const b of bricks) {
-        ctx.fillStyle = b.used ? "#5b21b6" : "#b45309";
-        roundRect(ctx, b.x, b.y, b.w, b.h, 4, true);
-        // brick sheen
-        ctx.fillStyle = "rgba(255,255,255,0.15)";
-        roundRect(ctx, b.x + 3, b.y + 3, b.w - 6, 4, 2, true);
+        drawBrick(ctx, b);
       }
 
       // items
@@ -225,17 +298,20 @@ function ContactGame() {
         if (!it.alive) continue;
         ctx.save();
         ctx.translate(it.x, it.y);
-        ctx.fillStyle = it.color;
-        ctx.beginPath();
-        ctx.arc(0, 0, 12, 0, Math.PI * 2);
-        ctx.fill();
-
-        // label
-        ctx.fillStyle = it.color === "#ffffff" ? "#111827" : "#ffffff";
-        ctx.font = "bold 10px ui-sans-serif, system-ui";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(it.label, 0, 0);
+        const iconSize = 28;
+        if (it.icon && it.icon.complete) {
+          ctx.drawImage(it.icon, -iconSize / 2, -iconSize / 2, iconSize, iconSize);
+        } else {
+          ctx.fillStyle = it.color ?? "#94a3b8";
+          ctx.beginPath();
+          ctx.arc(0, 0, iconSize / 2, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "#111827";
+          ctx.font = "bold 10px ui-sans-serif, system-ui";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(it.label.toUpperCase(), 0, 0);
+        }
         ctx.restore();
       }
 
@@ -251,7 +327,7 @@ function ContactGame() {
       window.removeEventListener("keydown", down);
       window.removeEventListener("keyup", up);
     };
-  }, []);
+  }, [onUnlock]);
 
   return (
     <canvas
@@ -274,6 +350,73 @@ function roundRect(ctx, x, y, w, h, r, fill) {
   ctx.arcTo(x, y, x + w, y, rr);
   ctx.closePath();
   if (fill) ctx.fill();
+}
+
+// brick sprite with mortar grooves and highlights
+function drawBrick(ctx, brick) {
+  const { x, y, w, h, used } = brick;
+  ctx.save();
+
+  const palette = used
+    ? {
+        top: "#a855f7",
+        mid: "#7c3aed",
+        base: "#5b21b6",
+        dark: "#3b0764",
+        mortar: "rgba(236, 233, 255, 0.18)",
+      }
+    : {
+        top: "#f59e0b",
+        mid: "#d97706",
+        base: "#b45309",
+        dark: "#7c2d12",
+        mortar: "rgba(255, 245, 235, 0.18)",
+      };
+
+  const gradient = ctx.createLinearGradient(0, y, 0, y + h);
+  gradient.addColorStop(0, palette.top);
+  gradient.addColorStop(0.45, palette.mid);
+  gradient.addColorStop(1, palette.dark);
+  ctx.fillStyle = gradient;
+  roundRect(ctx, x, y, w, h, 4, true);
+
+  // top highlight lip
+  ctx.fillStyle = palette.mortar;
+  roundRect(ctx, x + 2, y + 2, w - 4, Math.max(3, h * 0.18), 2, true);
+
+  // side shadow for depth
+  const sideShade = ctx.createLinearGradient(x, y, x + w, y);
+  sideShade.addColorStop(0.65, "rgba(0,0,0,0)");
+  sideShade.addColorStop(1, "rgba(15,23,42,0.45)");
+  ctx.fillStyle = sideShade;
+  roundRect(ctx, x, y, w, h, 4, true);
+
+  // scattered light ivory specks
+  const ivory = "rgba(254, 249, 231, 0.55)";
+  const seed = Math.abs(Math.sin((x + y) * 12.9898) * 43758.5453);
+  const offsets = [
+    { rx: 0.06, ry: 0.22 }, //left
+    { rx: 0.50, ry: 0.04 }, //top
+    { rx: 0.28, ry: 0.64 }, //mid
+    { rx: 0.68, ry: 0.48 }, //mid-right
+  ];
+
+  ctx.fillStyle = ivory;
+  const speckW = Math.max(2, 3 * w * 0.08);
+  const speckH = Math.max(1, 3 * h * 0.05);
+  const specks = offsets.map((o, i) => {
+    const jitter = ((seed + i * 0.37) % 0.08) - 0.04;
+    const px = x + w * (o.rx + jitter);
+    const py = y + h * (o.ry + jitter * 0.6);
+    ctx.fillRect(px, py, speckW, speckH);
+    return { x: px, y: py, w: speckW, h: speckH };
+  });
+
+  ctx.strokeStyle = "rgba(8, 11, 20, 0.9)";
+  ctx.lineWidth = 1;
+  specks.forEach((s) => ctx.strokeRect(s.x, s.y, s.w, s.h));
+
+  ctx.restore();
 }
 
 // lil' suit person sprite
