@@ -4,6 +4,7 @@ import Landing from "./components/Landing";
 import About from "./pages/About";
 import CertsAwards from "./pages/CertsAwards";
 import Contact from "./pages/Contact";
+import HouseCatLogo from "./components/HouseCatLogo";
 
 const NAV = [
   { href: "https://github.com/Mantablast", label: "All Projects" },
@@ -15,6 +16,7 @@ const NAV = [
 function Layout() {
   return (
     <section className="relative min-h-screen w-full overflow-hidden text-white">
+      <HouseCatLogo />
       <header className="pointer-events-auto absolute inset-x-0 top-0 z-50">
         <nav className="mx-auto flex h-16 items-center justify-center gap-8 px-6">
           {NAV.map((n) =>
