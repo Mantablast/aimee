@@ -45,7 +45,7 @@ export default function Contact() {
       <div className="relative z-10 flex min-h-screen w-full items-center justify-center px-6 py-16 text-zinc-50">
         <div className="w-full max-w-3xl rounded-3xl border border-white/10 bg-black/60 p-6 text-center shadow-2xl backdrop-blur">
           <h1 className="mb-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Punch some Bricks 👊
+            Punch some bricks 👊
           </h1>
           <p className="mb-5 text-sm opacity-80">
             Controls: ←/→ or A/D to move • Space to jump
