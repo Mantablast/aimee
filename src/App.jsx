@@ -7,7 +7,7 @@ import HouseCatLogo from "./components/HouseCatLogo";
 
 const NAV = [
   { href: "https://github.com/Mantablast", label: "All Projects" },
-  { href: "/certsawards",  label: "CV" },
+  { href: "/cv",  label: "CV" },
   { href: "/contact",      label: "Socials" },
 ];
 
@@ -50,7 +50,7 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Landing />} />
-          <Route path="/certsawards" element={<Cv />} />
+          <Route path="/cv" element={<Cv />} />
           <Route path="/contact" element={<Contact />} />
         </Route>
       </Routes>

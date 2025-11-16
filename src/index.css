@@ -138,12 +138,6 @@ button:focus-visible {
   animation: window-glow 6s ease-in-out infinite alternate;
 }
 
-/* @keyframes window-glow {
-  0% { fill: rgba(192, 132, 252, 0.45); }
-  50% { fill: rgba(168, 85, 247, 0.7); }
-  100% { fill: rgba(192, 132, 252, 0.55); }
-} */
-
 .cat-wrapper {
   pointer-events: none;
 }
