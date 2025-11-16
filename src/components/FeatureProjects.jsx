@@ -4,7 +4,7 @@ export default function FeatureProjects() {
       title: "Best-Dressed - New Shopping Filter",
       description:
         "Sort shopping filter items that are most important to you and the app will keep score, showing the top matches for your needs.",
-      image: "../../public/bestdressedicon.jpg",
+      image: "/bestdressedicon.jpg",
       repo: "https://github.com/Mantablast/best-dressed",
       demo: "https://best-dressed.vercel.app/",
     },
@@ -12,7 +12,7 @@ export default function FeatureProjects() {
       title: "KronoDrop",
       description:
         "Pick a date range and drop a halo on the map.  See events, save events.  Time is precious, plot your course.",
-      image: "../../public/kronodrop.png",
+      image: "/kronodrop.png",
       // repo intentionally omitted (private)
       demo: "https://d243n2kondfjst.cloudfront.net/",
     },
@@ -20,7 +20,7 @@ export default function FeatureProjects() {
       title: "BatchPanda",
       description:
         "A bulk file renamer that supports custom patterns, previews, undo functionality, file sorting, and more. A data analyst's dream tool.",
-      image: "../../public/PandaIcon75x75.png",
+      image: "/PandaIcon75x75.png",
       // repo intentionally omitted (private)
       demo: "#",
     },
@@ -28,9 +28,9 @@ export default function FeatureProjects() {
       title: "Tailored Motivator",
       description:
         "A simple chrome extension that provides tailored motivational quotes based on user preferences.",
-      image: "../../public/icon48.png",
+      image: "/icon48.png",
       repo: "https://github.com/Mantablast/tailored-motivator",
-      demo: "#",
+      demo: "https://chromewebstore.google.com/detail/tailored-motivator/ikbflbdegpbchkddkjplnbhikggjelca",
     },
   ];
 
