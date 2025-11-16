@@ -13,43 +13,42 @@ export default function HouseCatLogo() {
           className="relative z-10 h-full w-full drop-shadow-[0_4px_12px_rgba(15,23,42,0.35)]"
           aria-hidden="true"
         >
-          <g transform="translate(38, 0)">
-            {/* roof */}
+          <g transform="translate(38, 0) translate(0, 90) scale(0.9) translate(0, -90)">
+            {/* single house shape (roof + body) */}
             <path
-              d="M8 48 L50 12 L92 48"
-              fill="#a855f7"
-              stroke="#7c3aed"
-              strokeWidth="6"
-            />
-            {/* house body */}
-            <rect
-              x="18"
-              y="44"
-              width="64"
-              height="46"
-              rx="8"
+              d="M8 48 L50 12 L92 48 L92 90 L8 90 Z"
               fill="#0f172a"
               stroke="#1e293b"
               strokeWidth="5"
+              strokeLinejoin="round"
             />
             {/* door */}
             <rect
-              x="42"
-              y="58"
+              x="52"
+              y="63"
               width="16"
               height="22"
               rx="4"
-              fill="#1e293b"
+              fill="#334e78ff"
             />
-            {/* glowing window */}
+            {/* glowing windows */}
             <rect
-              x="30"
-              y="56"
-              width="40"
-              height="24"
-              rx="6"
+              x="33"
+              y="32"
+              width="12"
+              height="15"
+              rx="4"
               className="house-window"
-              fill="#c084fc"
+              fill="#b7b142ff"
+            />
+            <rect
+              x="57"
+              y="32"
+              width="12"
+              height="15"
+              rx="4"
+              className="house-window"
+              fill="#b7b142ff"
             />
           </g>
         </svg>

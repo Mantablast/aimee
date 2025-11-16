@@ -19,7 +19,7 @@ html, body, #root {
 .bg-grid-2 {
   background-image:
     linear-gradient(to right, rgba(255,255,255,0.35) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255,255,255,0.35) 1px, transparent 1px);
+    linear-gradient(to bottom, #ffffff59 1px, transparent 1px);
   background-size: 16px 16px;
   background-position: 28px 28px, 28px 28px;
   animation: grid-drift-2 110s cubic-bezier(.4,0,.2,1) infinite;
@@ -138,11 +138,11 @@ button:focus-visible {
   animation: window-glow 6s ease-in-out infinite alternate;
 }
 
-@keyframes window-glow {
-  0% { fill: rgba(192, 132, 252, 0.65); }
-  50% { fill: rgba(168, 85, 247, 0.9); }
-  100% { fill: rgba(192, 132, 252, 0.75); }
-}
+/* @keyframes window-glow {
+  0% { fill: rgba(192, 132, 252, 0.45); }
+  50% { fill: rgba(168, 85, 247, 0.7); }
+  100% { fill: rgba(192, 132, 252, 0.55); }
+} */
 
 .cat-wrapper {
   pointer-events: none;

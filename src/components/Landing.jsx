@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import FeatureProjects from "./FeatureProjects";
 import PageBackdrop from "./PageBackdrop";
-import { AboutContent } from "../pages/About";
 
 // Keep your original phrases
 const PHRASES = [
@@ -102,13 +101,6 @@ export default function Landing() {
           <h1 className="select-none text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 via-sky-400 to-emerald-400 drop-shadow-[0_0_24px_rgba(56,189,248,0.35)]">
             Aimee&nbsp;J
           </h1>
-        </div>
-      </section>
-
-      {/* ABOUT — now the same global background is still visible underneath */}
-      <section id="about" className="relative z-0 scroll-mt-24 py-24">
-        <div className="container mx-auto max-w-3xl px-6 md:px-12 text-white/90">
-          <AboutContent />
         </div>
       </section>
 
