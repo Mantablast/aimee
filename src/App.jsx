@@ -1,16 +1,14 @@
 // App.jsx
 import { BrowserRouter, Routes, Route, Outlet, Link } from "react-router-dom";
 import Landing from "./components/Landing";
-import About from "./pages/About";
-import CertsAwards from "./pages/CertsAwards";
+import Cv from "./pages/Cv";
 import Contact from "./pages/Contact";
 import HouseCatLogo from "./components/HouseCatLogo";
 
 const NAV = [
   { href: "https://github.com/Mantablast", label: "All Projects" },
-  { href: "#about",        label: "About" },
-  { href: "/certsawards",  label: "Certs / Awards" },
-  { href: "/contact",      label: "Contact" },
+  { href: "/certsawards",  label: "CV" },
+  { href: "/contact",      label: "Socials" },
 ];
 
 function Layout() {
@@ -52,7 +50,7 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Landing />} />
-          <Route path="/certsawards" element={<CertsAwards />} />
+          <Route path="/certsawards" element={<Cv />} />
           <Route path="/contact" element={<Contact />} />
         </Route>
       </Routes>
