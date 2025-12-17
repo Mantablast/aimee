@@ -1,6 +1,7 @@
 // src/pages/Contact.jsx
 import { useCallback, useEffect, useRef, useState } from "react";
 import PageBackdrop from "../components/PageBackdrop";
+import { openSafeExternalUrl, toSafeHttpUrl } from "../utils/safeUrl";
 
 const SOCIALS = [
   {
@@ -34,8 +35,10 @@ export default function Contact() {
 
   const handleUnlock = useCallback((icon) => {
     setUnlocked((prev) => {
-      if (prev.some((entry) => entry.url === icon.url)) return prev;
-      return [...prev, icon];
+      const safeUrl = toSafeHttpUrl(icon?.url);
+      if (!safeUrl) return prev;
+      if (prev.some((entry) => entry.url === safeUrl)) return prev;
+      return [...prev, { ...icon, url: safeUrl }];
     });
   }, []);
 
@@ -270,7 +273,7 @@ function ContactGame({ onUnlock }) {
         };
         if (rectsOverlap(playerRect, itemRect)) {
           it.alive = false;
-          window.open(it.url, "_blank", "noopener,noreferrer");
+          openSafeExternalUrl(it.url);
         }
       }
 

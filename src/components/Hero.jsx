@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion as Motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom"; // ← only Link is needed
 
 // I will keep the older version for a while just in case
@@ -74,7 +74,7 @@ export default function Hero() {
 
         <div className="relative h-12 sm:h-14 md:h-16">
           <AnimatePresence mode="wait">
-            <motion.p
+            <Motion.p
               key={word}
               initial={{ opacity: 0, y: 12, filter: "blur(6px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -84,7 +84,7 @@ export default function Hero() {
             >
               <span className="opacity-70">currently: </span>
               <span className="font-semibold">{word}</span>
-            </motion.p>
+            </Motion.p>
           </AnimatePresence>
         </div>
 
@@ -169,7 +169,7 @@ function ParallaxBits() {
   return (
     <div aria-hidden className="absolute inset-0 -z-10">
       {bits.map((b, i) => (
-        <motion.div
+        <Motion.div
           key={`${b.x}-${b.y}`} // ← stable key from coords
           className="absolute h-24 w-24 rounded-3xl bg-gradient-to-br from-fuchsia-400/40 via-sky-400/40 to-emerald-400/40 blur-xl"
           style={{ left: b.x, top: b.y }}

@@ -1,3 +1,5 @@
+import { toSafeHttpUrl } from "../utils/safeUrl";
+
 export default function FeatureProjects() {
   const projects = [
     {
@@ -17,12 +19,11 @@ export default function FeatureProjects() {
       demo: "https://d243n2kondfjst.cloudfront.net/",
     },
     {
-      title: "BatchPanda",
+      title: "ScreenShareBear",
       description:
-        "A bulk file renamer that supports custom patterns, previews, undo functionality, file sorting, and more. A data analyst's dream tool.",
-      image: "/PandaIcon75x75.png",
-      // repo intentionally omitted (private)
-      demo: "#",
+        "Retro prompt generator for remote meetings.  Built for remote teams and online gatherings, it transforms awkward silences into shared moments of interaction.",
+      image: "/bearlounge3.png",
+      demo: "https://screensharebear.com/",
     },
     {
       title: "Tailored Motivator",
@@ -50,56 +51,63 @@ export default function FeatureProjects() {
 
       {/* Rail-safe stack: no items-end, no marginRight */}
       <div className="w-full flex flex-col gap-4">
-        {projects.map((project, idx) => (
-          <article
-            key={project.title}
-            className={`w-full ${INDENT[idx]} group`}
-          >
-            <div className="relative w-full overflow-hidden rounded-xl bg-white/5 dark:bg-white/5 ring-1 ring-white/10 backdrop-blur
-                            transition-transform duration-300 group-hover:-translate-y-0.5">
-              <div className="flex items-center gap-3 p-3">
-                <div className="relative h-16 w-16 flex-none">
-                  {project.title === "BatchPanda" && (
-                    <div className="absolute inset-0.5 rounded-full bg-white/50 blur-lg" />
-                  )}
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="relative z-10 h-16 w-16 rounded-md object-cover"
-                  />
-                </div>
-                <div className="min-w-0">
-                  <h3 className="text-sm font-semibold text-white truncate">
-                    {project.title}
-                  </h3>
-                  <p className="mt-1 text-xs text-white/80">
-                    {project.description}
-                  </p>
-                  <div className="mt-1 flex gap-2">
-                    {project.repo && (
+        {projects.map((project, idx) => {
+          const repoHref = toSafeHttpUrl(project.repo);
+          const demoHref = toSafeHttpUrl(project.demo);
+          if (!demoHref) return null;
+
+          return (
+            <article
+              key={project.title}
+              className={`w-full ${INDENT[idx]} group`}
+            >
+              <div className="relative w-full overflow-hidden rounded-xl bg-white/5 dark:bg-white/5 ring-1 ring-white/10 backdrop-blur
+                              transition-transform duration-300 group-hover:-translate-y-0.5">
+                <div className="flex items-center gap-3 p-3">
+                  <div className="relative h-16 w-16 flex-none">
+                    {project.title === "BatchPanda" && (
+                      <div className="absolute inset-0.5 rounded-full bg-white/50 blur-lg" />
+                    )}
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="relative z-10 h-16 w-16 rounded-md object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-sm font-semibold text-white truncate">
+                      {project.title}
+                    </h3>
+                    <p className="mt-1 text-xs text-white/80">
+                      {project.description}
+                    </p>
+                    <div className="mt-1 flex gap-2">
+                      {repoHref && (
+                        <a
+                          href={repoHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-2 inline-block text-xs text-blue-300 hover:underline"
+                        >
+                          Repo
+                        </a>
+                      )}
                       <a
-                        href={project.repo}
+                        href={demoHref}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                         className="mt-2 inline-block text-xs text-blue-300 hover:underline"
                       >
-                        Repo
+                        Demo
                       </a>
-                    )}
-                    <a
-                      href={project.demo}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-2 inline-block text-xs text-blue-300 hover:underline"
-                    >
-                      Demo
-                    </a>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </article>
-        ))}
+            </article>
+          );
+        })}
       </div>
     </section>
   );
