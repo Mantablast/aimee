@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import PageBackdrop from "../components/PageBackdrop";
+import Turnstile from "../components/Turnstile";
+import { getRuntimeConfig } from "../utils/runtimeConfig";
 
 export default function Cv() {
   const [form, setForm] = useState({
@@ -10,15 +12,93 @@ export default function Cv() {
   });
 
   const [status, setStatus] = useState(null);
+  const [error, setError] = useState(null);
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [turnstileSiteKey, setTurnstileSiteKey] = useState(
+    import.meta.env.VITE_TURNSTILE_SITE_KEY ?? ""
+  );
+  const [apiUrl, setApiUrl] = useState(import.meta.env.VITE_CV_REQUEST_API_URL ?? "");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const turnstileRef = useRef(null);
+
+  const turnstileAction = useMemo(() => "cv_request", []);
+
+  useEffect(() => {
+    let alive = true;
+    getRuntimeConfig().then((config) => {
+      if (!alive) return;
+      if (!config) return;
+      if (typeof config.turnstileSiteKey === "string" && !turnstileSiteKey) {
+        setTurnstileSiteKey(config.turnstileSiteKey);
+      }
+      if (typeof config.apiUrl === "string" && !apiUrl) {
+        setApiUrl(config.apiUrl);
+      }
+    });
+    return () => {
+      alive = false;
+    };
+  }, [apiUrl, turnstileSiteKey]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setForm((previous) => ({ ...previous, [name]: value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    setStatus("submitted");
+    setError(null);
+
+    if (!apiUrl) {
+      setStatus("error");
+      setError("Missing backend API URL. Please try again later.");
+      return;
+    }
+
+    if (!turnstileToken) {
+      setStatus("error");
+      setError("Please complete the captcha before submitting.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setStatus("sending");
+    try {
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          turnstileToken,
+          turnstileAction,
+        }),
+      });
+
+      if (!response.ok) {
+        const message =
+          (await response
+            .json()
+            .then((data) => data?.error)
+            .catch(() => null)) ?? "Something went wrong. Please try again.";
+        setStatus("error");
+        setError(message);
+        setTurnstileToken("");
+        turnstileRef.current?.reset?.();
+        return;
+      }
+
+      setStatus("submitted");
+      setForm({ name: "", company: "", email: "", message: "" });
+      setTurnstileToken("");
+      turnstileRef.current?.reset?.();
+    } catch {
+      setStatus("error");
+      setError("Network error. Please try again.");
+      setTurnstileToken("");
+      turnstileRef.current?.reset?.();
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -112,11 +192,33 @@ export default function Cv() {
               />
             </div>
 
+            <div className="flex justify-center">
+              {turnstileSiteKey ? (
+                <Turnstile
+                  ref={turnstileRef}
+                  siteKey={turnstileSiteKey}
+                  action={turnstileAction}
+                  onToken={(token) => setTurnstileToken(token)}
+                  onExpire={() => setTurnstileToken("")}
+                  onError={() => {
+                    setTurnstileToken("");
+                    setStatus("error");
+                    setError("Captcha failed to load. Please refresh and try again.");
+                  }}
+                />
+              ) : (
+                <p className="text-center text-xs text-white/60">
+                  Captcha is not configured yet.
+                </p>
+              )}
+            </div>
+
             <button
               type="submit"
+              disabled={isSubmitting}
               className="inline-flex w-full items-center justify-center rounded-lg bg-white/90 px-4 py-2.5 text-sm font-semibold text-black shadow-md transition hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
-              Send Request
+              {isSubmitting ? "Sending..." : "Send Request"}
             </button>
           </form>
 
@@ -124,6 +226,10 @@ export default function Cv() {
             <p className="mt-4 text-center text-xs text-emerald-300/90">
               Thanks for your interest! I will get back to you shortly.
             </p>
+          )}
+
+          {status === "error" && error && (
+            <p className="mt-4 text-center text-xs text-red-300/90">{error}</p>
           )}
         </section>
       </main>
