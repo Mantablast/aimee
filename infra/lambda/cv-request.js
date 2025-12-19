@@ -1,23 +1,16 @@
-const AWS = require("aws-sdk");
+const { SESClient, SendEmailCommand } = require("@aws-sdk/client-ses");
+const { SSMClient, GetParameterCommand } = require("@aws-sdk/client-ssm");
 
-const ses = new AWS.SES({ apiVersion: "2010-12-01" });
-const ssm = new AWS.SSM({ apiVersion: "2014-11-06" });
+const ses = new SESClient({});
+const ssm = new SSMClient({});
 
 let cachedTurnstileSecret;
 let cachedTurnstileSecretPromise;
 
-function jsonResponse(statusCode, body, origin) {
+function jsonResponse(statusCode, body) {
   const headers = {
     "content-type": "application/json; charset=utf-8",
   };
-
-  if (origin) {
-    headers["access-control-allow-origin"] = origin;
-    headers["access-control-allow-headers"] = "content-type";
-    headers["access-control-allow-methods"] = "POST,OPTIONS";
-    headers["access-control-max-age"] = "86400";
-    headers["vary"] = "Origin";
-  }
 
   return {
     statusCode,
@@ -56,9 +49,12 @@ async function getTurnstileSecret() {
       throw new Error("TURNSTILE_SECRET_SSM_PARAMETER is not configured");
     }
 
-    const result = await ssm
-      .getParameter({ Name: parameterName, WithDecryption: true })
-      .promise();
+    const result = await ssm.send(
+      new GetParameterCommand({
+        Name: parameterName,
+        WithDecryption: true,
+      })
+    );
 
     const value = result?.Parameter?.Value;
     if (typeof value === "string" && value) return value;
@@ -118,27 +114,26 @@ exports.handler = async (event) => {
         : "";
 
   if (typeof event?.body === "string" && event.body.length > 20_000) {
-    return jsonResponse(413, { error: "payload_too_large" }, corsOrigin);
+    return jsonResponse(413, { error: "payload_too_large" });
   }
 
   if (method === "OPTIONS") {
-    if (!corsOrigin) return { statusCode: 204, headers: {}, body: "" };
-    return { statusCode: 204, headers: { "access-control-allow-origin": corsOrigin, "access-control-allow-headers": "content-type", "access-control-allow-methods": "POST,OPTIONS", "access-control-max-age": "86400", vary: "Origin" }, body: "" };
+    return { statusCode: 204, headers: {}, body: "" };
   }
 
   if (!corsOrigin && allowedOrigins.length > 0) {
-    return jsonResponse(403, { error: "forbidden_origin" }, null);
+    return jsonResponse(403, { error: "forbidden_origin" });
   }
 
   if (method !== "POST") {
-    return jsonResponse(405, { error: "method_not_allowed" }, corsOrigin);
+    return jsonResponse(405, { error: "method_not_allowed" });
   }
 
   let body;
   try {
     body = event?.body ? JSON.parse(event.body) : {};
   } catch {
-    return jsonResponse(400, { error: "invalid_json" }, corsOrigin);
+    return jsonResponse(400, { error: "invalid_json" });
   }
 
   const name = clamp(stripNewlines(body?.name), 120);
@@ -149,15 +144,15 @@ exports.handler = async (event) => {
   const turnstileAction = stripNewlines(body?.turnstileAction);
 
   if (!name || !company || !email || !message) {
-    return jsonResponse(400, { error: "missing_fields" }, corsOrigin);
+    return jsonResponse(400, { error: "missing_fields" });
   }
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return jsonResponse(400, { error: "invalid_email" }, corsOrigin);
+    return jsonResponse(400, { error: "invalid_email" });
   }
 
   if (!turnstileToken) {
-    return jsonResponse(400, { error: "missing_captcha" }, corsOrigin);
+    return jsonResponse(400, { error: "missing_captcha" });
   }
 
   const expectedAction = process.env.TURNSTILE_EXPECTED_ACTION ?? "cv_request";
@@ -171,23 +166,22 @@ exports.handler = async (event) => {
     const secret = await getTurnstileSecret();
     verification = await verifyTurnstile({ secret, token: turnstileToken, remoteip });
   } catch {
-    return jsonResponse(502, { error: "captcha_unavailable" }, corsOrigin);
+    return jsonResponse(502, { error: "captcha_unavailable" });
   }
 
   if (!verification?.success) {
     return jsonResponse(
       400,
-      { error: "captcha_failed", codes: verification?.["error-codes"] ?? [] },
-      corsOrigin
+      { error: "captcha_failed", codes: verification?.["error-codes"] ?? [] }
     );
   }
 
   if (turnstileAction && verification?.action && turnstileAction !== verification.action) {
-    return jsonResponse(400, { error: "captcha_action_mismatch" }, corsOrigin);
+    return jsonResponse(400, { error: "captcha_action_mismatch" });
   }
 
   if (verification?.action && verification.action !== expectedAction) {
-    return jsonResponse(400, { error: "captcha_action_mismatch" }, corsOrigin);
+    return jsonResponse(400, { error: "captcha_action_mismatch" });
   }
 
   const toEmail = process.env.TO_EMAIL || "aimeejesso@gmail.com";
@@ -213,8 +207,8 @@ exports.handler = async (event) => {
   ].join("\n");
 
   try {
-    await ses
-      .sendEmail({
+    await ses.send(
+      new SendEmailCommand({
         Source: fromEmail,
         Destination: { ToAddresses: [toEmail] },
         ReplyToAddresses: [email],
@@ -223,10 +217,15 @@ exports.handler = async (event) => {
           Body: { Text: { Data: bodyText, Charset: "UTF-8" } },
         },
       })
-      .promise();
-  } catch {
-    return jsonResponse(502, { error: "email_send_failed" }, corsOrigin);
+    );
+  } catch (error) {
+    console.error("SES send failed", {
+      name: error?.name,
+      message: error?.message,
+      metadata: error?.$metadata,
+    });
+    return jsonResponse(502, { error: "email_send_failed" });
   }
 
-  return jsonResponse(200, { ok: true }, corsOrigin);
+  return jsonResponse(200, { ok: true });
 };

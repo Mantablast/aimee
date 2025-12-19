@@ -8,6 +8,7 @@ const origins = require("aws-cdk-lib/aws-cloudfront-origins");
 const acm = require("aws-cdk-lib/aws-certificatemanager");
 const iam = require("aws-cdk-lib/aws-iam");
 const lambda = require("aws-cdk-lib/aws-lambda");
+const lambdaNodejs = require("aws-cdk-lib/aws-lambda-nodejs");
 const route53 = require("aws-cdk-lib/aws-route53");
 const targets = require("aws-cdk-lib/aws-route53-targets");
 const ssm = require("aws-cdk-lib/aws-ssm");
@@ -68,25 +69,32 @@ class AimeeStack extends Stack {
     );
     siteBucket.grantRead(originAccessIdentity);
 
-    const cvRequestFunction = new lambda.Function(this, "CvRequestFunction", {
-      runtime: lambda.Runtime.NODEJS_18_X,
-      handler: "cv-request.handler",
-      code: lambda.Code.fromAsset(path.join(__dirname, "../lambda")),
-      timeout: Duration.seconds(10),
-      memorySize: 256,
-      environment: {
-        TURNSTILE_SECRET_SSM_PARAMETER:
-          turnstileSecretSsmParameterName.valueAsString,
-        TURNSTILE_EXPECTED_ACTION: "cv_request",
-        TO_EMAIL: toEmail.valueAsString,
-        FROM_EMAIL: fromEmail.valueAsString,
-        ALLOWED_ORIGINS: cdk.Fn.join(",", [
-          `https://${domainName}`,
-          `https://${wwwDomainName}`,
-          "http://localhost:5173",
-        ]),
-      },
-    });
+    const cvRequestFunction = new lambdaNodejs.NodejsFunction(
+      this,
+      "CvRequestFunction",
+      {
+        runtime: lambda.Runtime.NODEJS_18_X,
+        entry: path.join(__dirname, "../lambda/cv-request.js"),
+        handler: "handler",
+        timeout: Duration.seconds(10),
+        memorySize: 256,
+        bundling: {
+          target: "node18",
+        },
+        environment: {
+          TURNSTILE_SECRET_SSM_PARAMETER:
+            turnstileSecretSsmParameterName.valueAsString,
+          TURNSTILE_EXPECTED_ACTION: "cv_request",
+          TO_EMAIL: toEmail.valueAsString,
+          FROM_EMAIL: fromEmail.valueAsString,
+          ALLOWED_ORIGINS: cdk.Fn.join(",", [
+            `https://${domainName}`,
+            `https://${wwwDomainName}`,
+            "http://localhost:5173",
+          ]),
+        },
+      }
+    );
 
     const turnstileSecretParameter =
       ssm.StringParameter.fromSecureStringParameterAttributes(
@@ -139,7 +147,7 @@ class AimeeStack extends Stack {
       "script-src 'self' https://challenges.cloudflare.com",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: https:",
-      "font-src 'self' data:",
+      "font-src 'self' data: https://challenges.cloudflare.com",
       cdk.Fn.join(" ", [
         "connect-src 'self'",
         "https://challenges.cloudflare.com",
