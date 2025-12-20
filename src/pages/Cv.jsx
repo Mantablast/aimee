@@ -128,6 +128,7 @@ export default function Cv() {
                 name="name"
                 type="text"
                 required
+                maxLength={25}
                 value={form.name}
                 onChange={handleChange}
                 className="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none focus:ring-1 focus:ring-white/40"
@@ -147,6 +148,7 @@ export default function Cv() {
                 name="company"
                 type="text"
                 required
+                maxLength={25}
                 value={form.company}
                 onChange={handleChange}
                 className="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none focus:ring-1 focus:ring-white/40"
@@ -166,6 +168,8 @@ export default function Cv() {
                 name="email"
                 type="email"
                 required
+                inputMode="email"
+                autoComplete="email"
                 value={form.email}
                 onChange={handleChange}
                 className="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none focus:ring-1 focus:ring-white/40"
@@ -185,6 +189,7 @@ export default function Cv() {
                 name="message"
                 rows={4}
                 required
+                maxLength={200}
                 value={form.message}
                 onChange={handleChange}
                 className="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none focus:ring-1 focus:ring-white/40"

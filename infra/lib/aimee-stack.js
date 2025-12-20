@@ -11,6 +11,7 @@ const lambda = require("aws-cdk-lib/aws-lambda");
 const lambdaNodejs = require("aws-cdk-lib/aws-lambda-nodejs");
 const route53 = require("aws-cdk-lib/aws-route53");
 const targets = require("aws-cdk-lib/aws-route53-targets");
+const ses = require("aws-cdk-lib/aws-ses");
 const ssm = require("aws-cdk-lib/aws-ssm");
 const s3 = require("aws-cdk-lib/aws-s3");
 const s3deploy = require("aws-cdk-lib/aws-s3-deployment");
@@ -47,8 +48,8 @@ class AimeeStack extends Stack {
 
     const fromEmail = new CfnParameter(this, "FromEmail", {
       type: "String",
-      default: "aimeejesso@gmail.com",
-      description: "SES verified sender identity (email or domain).",
+      default: `cv@${domainName}`,
+      description: "SES verified sender identity (domain-based is best).",
     });
 
     const hostedZoneId = new CfnParameter(this, "HostedZoneId", {
@@ -203,6 +204,25 @@ class AimeeStack extends Stack {
         zoneName: domainName,
       }
     );
+
+    const mailFromDomain = `mail.${domainName}`;
+
+    new ses.EmailIdentity(this, "SesDomainIdentity", {
+      identity: ses.Identity.publicHostedZone(hostedZone),
+      mailFromDomain,
+    });
+
+    new route53.TxtRecord(this, "SesSpfRecord", {
+      zone: hostedZone,
+      recordName: domainName,
+      values: ["v=spf1 include:amazonses.com -all"],
+    });
+
+    new route53.TxtRecord(this, "DmarcRecord", {
+      zone: hostedZone,
+      recordName: `_dmarc.${domainName}`,
+      values: ["v=DMARC1; p=none;"],
+    });
 
     const certificate = new acm.DnsValidatedCertificate(this, "Certificate", {
       domainName,

@@ -88,11 +88,14 @@ VITE_CV_REQUEST_API_URL=https://your-lambda-url.on.aws/
 - AWS CLI configured (profile + region)
 - Route53 hosted zone for `aimeej.ca` in the AWS account you deploy to
 - SES configured in `ca-central-1`:
-  - verify the sender identity (`FromEmail`)
+  - use a domain-based `FromEmail` (the stack creates SES domain identity + DKIM/Mail-From records)
   - if SES is in sandbox, also verify the recipient (`ToEmail`)
 - Cloudflare Turnstile:
   - Site key: provided at deploy time
   - Secret key: stored in SSM Parameter Store (SecureString)
+- DNS deliverability records:
+  - CDK creates DKIM + MAIL FROM records via SES
+  - CDK adds SPF + DMARC TXT records (merge if you already have SPF/DMARC)
 
 ### Configure Turnstile Secret (SSM)
 

@@ -7,7 +7,7 @@ This repo contains:
 ## Prereqs
 
 - AWS CLI configured (`AWS_PROFILE`, `AWS_REGION`)
-- AWS SES set up in the target region (verify sender identity and, if in SES sandbox, verify the recipient too)
+- AWS SES set up in the target region (use a domain-based sender; stack creates SES identity + DKIM/Mail-From)
 - Cloudflare Turnstile keys (site key + secret)
 - Route53 hosted zone for your domain in the same AWS account (this stack looks up `EXISTING_DOMAIN` and creates `aimeej.ca` + `www.aimeej.ca` records)
 
@@ -29,7 +29,7 @@ From the repo root:
 
 `npx cdk bootstrap`
 
-`npx cdk deploy --parameters TurnstileSiteKey=YOUR_SITE_KEY --parameters TurnstileSecretSsmParameterName=/aimeej/turnstile/secret --parameters ToEmail=aimeejesso@gmail.com --parameters FromEmail=aimeejesso@gmail.com`
+`npx cdk deploy --parameters TurnstileSiteKey=YOUR_SITE_KEY --parameters TurnstileSecretSsmParameterName=/aimeej/turnstile/secret --parameters ToEmail=aimeejesso@gmail.com --parameters FromEmail=cv@aimeej.ca`
 
 You also need the hosted zone id:
 
@@ -38,5 +38,7 @@ You also need the hosted zone id:
 Then include:
 
 `--parameters HostedZoneId=Z123...`
+
+Note: the stack adds DKIM + MAIL FROM records via SES, plus SPF + DMARC TXT records in Route53. If your domain already has SPF/DMARC records, merge the `include:amazonses.com` and DMARC policy rather than creating duplicates.
 
 After deploy, the stack uploads `dist/` and writes `runtime-config.json` (contains `apiUrl` + `turnstileSiteKey`) into the site bucket.
