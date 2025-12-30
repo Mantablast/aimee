@@ -7,7 +7,6 @@ export default function FeatureProjects() {
       description:
         "Sort shopping filter items that are most important to you and the app will keep score, showing the top matches for your needs.",
       image: "/bestdressedicon.jpg",
-      repo: "https://github.com/Mantablast/best-dressed",
       demo: "https://d1st7t41vjtwqp.cloudfront.net/",
     },
     {
