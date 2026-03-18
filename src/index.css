@@ -5,50 +5,61 @@ html, body, #root {
 @tailwind components;
 @tailwind utilities;
 
-.bg-grid {
+.page-backdrop {
+  background: #040812;
+}
+
+.page-backdrop__base {
   background-image:
-    linear-gradient(to right, rgba(255,255,255,0.45) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255,255,255,0.45) 1px, transparent 1px);
-  background-size: 106px 106px;
-  animation: grid-drift 90s ease-in-out infinite;
-  will-change: background-position, transform;
+    radial-gradient(82% 64% at 14% 18%, rgba(56, 189, 248, 0.13), transparent 66%),
+    radial-gradient(54% 42% at 84% 20%, rgba(251, 191, 36, 0.1), transparent 70%),
+    radial-gradient(42% 28% at 58% 56%, rgba(255, 244, 228, 0.08), transparent 74%),
+    linear-gradient(180deg, #07101b 0%, #06101a 42%, #040812 74%, #02040a 100%);
 }
 
-
-
-.bg-grid-2 {
-  background-image:
-    linear-gradient(to right, rgba(255,255,255,0.35) 1px, transparent 1px),
-    linear-gradient(to bottom, #ffffff59 1px, transparent 1px);
-  background-size: 16px 16px;
-  background-position: 28px 28px, 28px 28px;
-  animation: grid-drift-2 110s cubic-bezier(.4,0,.2,1) infinite;
-  will-change: background-position, transform;
+.page-backdrop__highlight {
+  background:
+    radial-gradient(38% 24% at 58% 55%, rgba(255, 244, 228, 0.13), transparent 76%),
+    radial-gradient(34% 22% at 61% 49%, rgba(125, 211, 252, 0.08), transparent 76%);
+  mix-blend-mode: screen;
+  opacity: 0.85;
 }
 
-
-@keyframes grid-drift {
-  0%   { background-position: 0px 0px, 0px 0px; transform: skew(0deg,0deg) scale(1); }
-  20%  { background-position: 40px 40px, 40px 40px; transform: skew(0.25deg,0.25deg) scale(1.01); }
-  50%  { background-position: 80px 80px, 80px 80px; transform: skew(-0.35deg,-0.35deg) scale(1.02); }
-  70%  { background-position: 120px 120px, 120px 120px; transform: skew(0.2deg,-0.2deg) scale(1.015); }
-  100% { background-position: 0px 0px, 0px 0px; transform: skew(0deg,0deg) scale(1); }
+.page-backdrop__svg {
+  opacity: 0.97;
+  shape-rendering: geometricPrecision;
 }
 
-
-@keyframes grid-drift-2 {
-  0%   { background-position: 28px 28px, 28px 28px; transform: skew(0deg,0deg) scale(1); }
-  25%  { background-position: 68px 68px, 68px 68px; transform: skew(-0.25deg,0.25deg) scale(1.012); }
-  55%  { background-position: 108px 108px,108px 108px; transform: skew(0.35deg,-0.35deg) scale(1.018); }
-  85%  { background-position: 148px 148px,148px 148px; transform: skew(-0.2deg,-0.1deg) scale(1.01); }
-  100% { background-position: 28px 28px, 28px 28px; transform: skew(0deg,0deg) scale(1); }
+.page-backdrop__curve,
+.page-backdrop__curve-glow {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  shape-rendering: geometricPrecision;
 }
 
+.page-backdrop__curve {
+  mix-blend-mode: screen;
+}
+
+.page-backdrop__curve-glow {
+  mix-blend-mode: screen;
+}
+
+.page-backdrop__vignette {
+  background:
+    radial-gradient(70% 58% at 50% 55%, transparent 0%, rgba(3, 6, 12, 0.16) 62%, rgba(1, 3, 8, 0.84) 100%),
+    linear-gradient(180deg, rgba(2, 5, 10, 0.06) 0%, rgba(1, 3, 8, 0.46) 100%);
+}
 
 @media (prefers-reduced-motion: reduce) {
-  [style*="url(#grid-warp)"] { filter: none !important; }
+  .page-backdrop__svg,
+  .page-backdrop__curve,
+  .page-backdrop__curve-glow {
+    animation: none !important;
+  }
 }
-
 
 
 body {
@@ -115,22 +126,57 @@ button:focus-visible {
 }
 .animate-caret { animation: caret 1s steps(1, end) infinite; }
 
-/* drift and warp */
-@keyframes grid-drift {
-  0%   { background-position: 0px 0px, 0px 0px; transform: skew(0deg,0deg) scale(1); }
-  25%  { background-position: 60px 60px, 60px 60px; transform: skew(0.3deg,0.3deg) scale(1.02); }
-  50%  { background-position: 120px 120px, 120px 120px; transform: skew(0deg,0deg) scale(1.01); }
-  75%  { background-position: 60px 60px, 60px 60px; transform: skew(-0.3deg,-0.3deg) scale(1.02); }
-  100% { background-position: 0px 0px, 0px 0px; transform: skew(0deg,0deg) scale(1); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  [style*="grid-drift"] { animation: none !important; }
-}
-
 .debug {
   opacity: 0.25 !important;
   mix-blend-mode: normal !important;
+}
+
+.site-footer {
+  position: relative;
+  margin-top: 18px;
+  padding: 12px 0;
+  text-align: center;
+  color: rgba(246, 239, 230, 0.65);
+}
+
+.footer-copy {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.footer-kofi {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(255, 111, 60, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.footer-kofi:hover,
+.footer-kofi:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.footer-kofi img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+@media (max-width: 600px) {
+  .footer-kofi {
+    position: static;
+    margin: 12px auto 0;
+  }
 }
 
 /* House logo & cat peek animation */

@@ -1,38 +1,40 @@
 import { toSafeHttpUrl } from "../utils/safeUrl";
 
+export const FEATURE_PROJECTS = [
+  {
+    title: "Best-Dressed - New Shopping Filter",
+    description:
+      "Sort shopping filter items that are most important to you and the app will keep score, showing the top matches for your needs.",
+    image: "/bestdressedicon.jpg",
+    demo: "https://d1st7t41vjtwqp.cloudfront.net/",
+  },
+  {
+    title: "KronoDrop",
+    description:
+      "Pick a date range and drop a halo on the map.  See events, save events.  Time is precious, plot your course.",
+    image: "/kronodrop.png",
+    // repo intentionally omitted (private)
+    demo: "https://d243n2kondfjst.cloudfront.net/",
+  },
+  {
+    title: "ScreenShareBear",
+    description:
+      "Retro prompt generator for remote meetings.  Built for remote teams and online gatherings, it transforms awkward silences into shared moments of interaction.",
+    image: "/bearlounge3.png",
+    demo: "https://screensharebear.com/",
+  },
+  {
+    title: "Zero Commits Are Lava",
+    description:
+      "A lightweight web game that turns your contribution calendar into a lava-running puzzle.",
+    image: "/burnedbutt.png",
+    repo: "https://github.com/Mantablast/zero-commits-are-lava",
+    demo: "https://zerocommitsarelava.com",
+  },
+];
+
 export default function FeatureProjects() {
-  const projects = [
-    {
-      title: "Best-Dressed - New Shopping Filter",
-      description:
-        "Sort shopping filter items that are most important to you and the app will keep score, showing the top matches for your needs.",
-      image: "/bestdressedicon.jpg",
-      demo: "https://d1st7t41vjtwqp.cloudfront.net/",
-    },
-    {
-      title: "KronoDrop",
-      description:
-        "Pick a date range and drop a halo on the map.  See events, save events.  Time is precious, plot your course.",
-      image: "/kronodrop.png",
-      // repo intentionally omitted (private)
-      demo: "https://d243n2kondfjst.cloudfront.net/",
-    },
-    {
-      title: "ScreenShareBear",
-      description:
-        "Retro prompt generator for remote meetings.  Built for remote teams and online gatherings, it transforms awkward silences into shared moments of interaction.",
-      image: "/bearlounge3.png",
-      demo: "https://screensharebear.com/",
-    },
-    {
-      title: "Tailored Motivator",
-      description:
-        "A simple chrome extension that provides tailored motivational quotes based on user preferences.",
-      image: "/icon48.png",
-      repo: "https://github.com/Mantablast/tailored-motivator",
-      demo: "https://chromewebstore.google.com/detail/tailored-motivator/ikbflbdegpbchkddkjplnbhikggjelca",
-    },
-  ];
+  const projects = FEATURE_PROJECTS;
 
   // Optional tiny left-indent per card (stays INSIDE the rail)
   const INDENT = ["pl-1", "pl-5", "pl-9", "pl-11"];

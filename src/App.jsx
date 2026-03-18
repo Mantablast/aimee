@@ -3,12 +3,15 @@ import { BrowserRouter, Routes, Route, Outlet, Link } from "react-router-dom";
 import Landing from "./components/Landing";
 import Cv from "./pages/Cv";
 import Contact from "./pages/Contact";
+import Projects from "./pages/Projects";
 import HouseCatLogo from "./components/HouseCatLogo";
+import SiteFooter from "./components/SiteFooter";
 
 const NAV = [
-  { href: "https://github.com/Mantablast", label: "All Projects" },
-  { href: "/cv",  label: "CV" },
-  { href: "/contact",      label: "Socials" },
+  { href: "https://github.com/Mantablast", label: "Github" },
+  { href: "/projects", label: "Projects" },
+  { href: "/cv", label: "CV" },
+  { href: "/contact", label: "Socials" },
 ];
 
 function Layout() {
@@ -23,6 +26,8 @@ function Layout() {
                 <a
                   key={n.href}
                   href={n.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-sm font-medium text-white/80 hover:text-white transition"
                 >
                   {n.label}
@@ -40,6 +45,7 @@ function Layout() {
         </nav>
       </header>
       <Outlet />
+      <SiteFooter />
     </section>
   );
 }
@@ -50,6 +56,7 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Landing />} />
+          <Route path="/projects" element={<Projects />} />
           <Route path="/cv" element={<Cv />} />
           <Route path="/contact" element={<Contact />} />
         </Route>
