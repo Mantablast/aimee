@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import FeatureProjects from "./FeatureProjects";
 import PageBackdrop from "./PageBackdrop";
 
@@ -22,47 +22,80 @@ const PHRASES = [
   "⚙️ tools that save companies mega stacks of money",
 ];
 
-function useTypewriter(words, speed = 60, pause = 1200) {
-  const list = useMemo(() => words.filter(Boolean), [words]);
-  const [i, setI] = useState(0);
-  const [text, setText] = useState("");
-  const [deleting, setDeleting] = useState(false);
-  const timer = useRef(null);
+function usePrefersReducedMotion() {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
-    const current = list[i % list.length] ?? "";
-    const doneTyping = text === current;
-    const doneDeleting = deleting && text === "";
-
-    const tick = () => {
-      if (!deleting) setText(current.slice(0, text.length + 1));
-      else setText(current.slice(0, text.length - 1));
-    };
-
-    clearTimeout(timer.current);
-    if (!deleting && !doneTyping) timer.current = setTimeout(tick, speed);
-    else if (!deleting && doneTyping)
-      timer.current = setTimeout(() => setDeleting(true), pause);
-    else if (deleting && !doneDeleting)
-      timer.current = setTimeout(tick, speed * 0.6);
-    else if (doneDeleting) {
-      setDeleting(false);
-      setI((n) => (n + 1) % list.length);
+    if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+      return undefined;
     }
 
-    return () => clearTimeout(timer.current);
-  }, [deleting, i, list, pause, speed, text]);
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
 
-  return text;
+    updatePreference();
+
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", updatePreference);
+      return () => mediaQuery.removeEventListener("change", updatePreference);
+    }
+
+    mediaQuery.addListener(updatePreference);
+    return () => mediaQuery.removeListener(updatePreference);
+  }, []);
+
+  return prefersReducedMotion;
+}
+
+function RotatingPhrase({ phrases, interval = 2800, transitionMs = 220 }) {
+  const list = useMemo(() => phrases.filter(Boolean), [phrases]);
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const [index, setIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    if (prefersReducedMotion || list.length < 2) return undefined;
+
+    let swapTimeoutId = 0;
+    const intervalId = window.setInterval(() => {
+      setIsVisible(false);
+      swapTimeoutId = window.setTimeout(() => {
+        setIndex((current) => (current + 1) % list.length);
+        setIsVisible(true);
+      }, transitionMs);
+    }, interval);
+
+    return () => {
+      window.clearInterval(intervalId);
+      window.clearTimeout(swapTimeoutId);
+    };
+  }, [interval, list, prefersReducedMotion, transitionMs]);
+
+  return (
+    <span className="block max-w-[48ch] overflow-hidden text-ellipsis whitespace-normal">
+      <span
+        aria-live="polite"
+        className="inline-block"
+        style={{
+          opacity: isVisible ? 1 : 0,
+          transform: `translateY(${isVisible ? "0px" : "6px"})`,
+          transition: prefersReducedMotion
+            ? "none"
+            : `opacity ${transitionMs}ms ease, transform ${transitionMs}ms ease`,
+          willChange: prefersReducedMotion ? "auto" : "opacity, transform",
+        }}
+      >
+        {list[index] ?? ""}
+      </span>
+    </span>
+  );
 }
 
 export default function Landing() {
-  const typed = useTypewriter(PHRASES);
-
   return (
     <>
       {/* ONE background for the whole page (hero + about + projects) */}
-      <PageBackdrop />
+      <PageBackdrop motionLevel="lite" />
 
       {/* HERO — content only; background lives globally now */}
       <section
@@ -80,10 +113,7 @@ export default function Landing() {
               has been busy building
             </p>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-white/90">
-              {/* keep this span narrow enough not to crash into the right column */}
-              <span className="align-middle whitespace-wrap max-w-[48ch] overflow-hidden text-ellipsis block">
-                {typed}
-              </span>
+              <RotatingPhrase phrases={PHRASES} />
               <span className="ml-1 inline-block h-[1em] w-[2px] translate-y-[-2px] animate-caret bg-white/80" />
             </h2>
           </div>

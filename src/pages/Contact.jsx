@@ -44,7 +44,7 @@ export default function Contact() {
 
   return (
     <>
-      <PageBackdrop />
+      <PageBackdrop motionLevel="static" />
       <div className="relative z-10 flex min-h-screen w-full items-center justify-center px-6 py-16 text-zinc-50">
         <div className="w-full max-w-3xl rounded-3xl border border-white/10 bg-black/60 p-6 text-center shadow-2xl backdrop-blur">
           <h1 className="mb-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
@@ -97,11 +97,14 @@ function ContactGame({ onUnlock }) {
 
   useEffect(() => {
     const canvas = ref.current;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas?.getContext("2d", { alpha: false });
+    if (!canvas || !ctx) return undefined;
 
     // --- world ---
     const W = (canvas.width = 520);
     const H = (canvas.height = 270);
+    canvas.style.width = `${W}px`;
+    canvas.style.height = `${H}px`;
     const GROUND_Y = H - 48;
     const GRAV = 0.7;
     const FRICTION = 0.86;
@@ -125,7 +128,7 @@ function ContactGame({ onUnlock }) {
       { x: 200, y: 90, w: 42, h: 42, used: false },
       { x: 250, y: 90, w: 42, h: 42, used: false },
       { x: 300, y: 90, w: 42, h: 42, used: false },
-      { x: 350, y: 90, w: 42, h: 42, used: false }
+      { x: 350, y: 90, w: 42, h: 42, used: false },
     ];
 
     // --- icon cache ---
@@ -137,25 +140,92 @@ function ContactGame({ onUnlock }) {
     }
 
     // --- active floating items ---
-    const items = []; // {x,y,vx,vy,label,url,alive,image,imageSrc,color}
+    const items = []; // {x,y,vx,vy,label,url,icon,imageSrc,color}
 
-    // helpers
-    const rectsOverlap = (a, b) =>
-      a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+    const createSpriteCanvas = (width, height, draw) => {
+      const sprite = document.createElement("canvas");
+      sprite.width = width;
+      sprite.height = height;
+      const spriteCtx = sprite.getContext("2d");
+      if (spriteCtx) draw(spriteCtx);
+      return sprite;
+    };
+
+    const backgroundLayer = createSpriteCanvas(W, H, (backgroundCtx) => {
+      const gradient = backgroundCtx.createLinearGradient(0, 0, 0, H);
+      gradient.addColorStop(0, "#0b1220");
+      gradient.addColorStop(1, "#111827");
+      backgroundCtx.fillStyle = gradient;
+      backgroundCtx.fillRect(0, 0, W, H);
+      backgroundCtx.fillStyle = "#1f2937";
+      backgroundCtx.fillRect(0, GROUND_Y, W, H - GROUND_Y);
+    });
+    const brickSpriteFresh = createSpriteCanvas(42, 42, (spriteCtx) => {
+      drawBrick(spriteCtx, { x: 0, y: 0, w: 42, h: 42, used: false });
+    });
+    const brickSpriteUsed = createSpriteCanvas(42, 42, (spriteCtx) => {
+      drawBrick(spriteCtx, { x: 0, y: 0, w: 42, h: 42, used: true });
+    });
+    const PLAYER_SPRITE_WIDTH = 40;
+    const PLAYER_SPRITE_HEIGHT = 56;
+    const PLAYER_SPRITE_OFFSET_X = 9;
+    const PLAYER_SPRITE_OFFSET_Y = 12;
+    const playerSprite = createSpriteCanvas(
+      PLAYER_SPRITE_WIDTH,
+      PLAYER_SPRITE_HEIGHT,
+      (spriteCtx) => {
+        drawSuitDude(
+          spriteCtx,
+          PLAYER_SPRITE_OFFSET_X,
+          PLAYER_SPRITE_OFFSET_Y,
+          player.w,
+          player.h
+        );
+      }
+    );
 
     // input
+    const isHandledKey = (event) =>
+      ["ArrowLeft", "ArrowRight", "a", "A", "d", "D"].includes(event.key) ||
+      event.code === "Space";
     const down = (e) => {
+      if (!isHandledKey(e)) return;
+      e.preventDefault();
       if (["ArrowLeft", "a", "A"].includes(e.key)) keys.left = true;
       if (["ArrowRight", "d", "D"].includes(e.key)) keys.right = true;
       if (e.code === "Space") keys.jump = true;
     };
     const up = (e) => {
+      if (!isHandledKey(e)) return;
+      e.preventDefault();
       if (["ArrowLeft", "a", "A"].includes(e.key)) keys.left = false;
       if (["ArrowRight", "d", "D"].includes(e.key)) keys.right = false;
       if (e.code === "Space") keys.jump = false;
     };
+    const resetInputState = () => {
+      keys.left = false;
+      keys.right = false;
+      keys.jump = false;
+    };
+    const stopPlayer = () => {
+      resetInputState();
+      player.vx = 0;
+      player.vy = 0;
+    };
+    const handleBlur = () => {
+      stopPlayer();
+    };
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        stopPlayer();
+      } else {
+        resetInputState();
+      }
+    };
     window.addEventListener("keydown", down);
     window.addEventListener("keyup", up);
+    window.addEventListener("blur", handleBlur);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     function spawnItem(fromBrick, indexHint = 0) {
       const pick = SOCIALS[indexHint % SOCIALS.length];
@@ -169,21 +239,55 @@ function ContactGame({ onUnlock }) {
         label: pick.label,
         color: pick.color,
         url: pick.url,
-        alive: true,
         icon: iconImage,
         imageSrc: resolvedImageSrc,
       });
-      if (typeof onUnlock === "function")
+      if (typeof onUnlock === "function") {
         onUnlock({ ...pick, imageSrc: resolvedImageSrc });
+      }
     }
 
     let raf;
-    const step = () => {
+    let lastTick = 0;
+    let lastDraw = 0;
+    const ACTIVE_FRAME_MS = 1000 / 60;
+    const IDLE_FRAME_MS = 1000 / 20;
+    let queuedExternalUrl = null;
+
+    const step = (now) => {
+      if (document.hidden) {
+        stopPlayer();
+        lastTick = now;
+        lastDraw = now;
+        raf = requestAnimationFrame(step);
+        return;
+      }
+
+      if (!lastTick) lastTick = now;
+      const idle =
+        !keys.left &&
+        !keys.right &&
+        !keys.jump &&
+        items.length === 0 &&
+        Math.abs(player.vx) < 0.05 &&
+        Math.abs(player.vy) < 0.05 &&
+        player.onGround;
+      const minFrameMs = idle ? IDLE_FRAME_MS : ACTIVE_FRAME_MS;
+
+      if (lastDraw && now - lastDraw < minFrameMs) {
+        raf = requestAnimationFrame(step);
+        return;
+      }
+
+      const dt = Math.min(2.5, (now - lastTick) / (1000 / 60) || 1);
+      lastTick = now;
+      lastDraw = now;
+
       // physics: horizontal
-      if (keys.left) player.vx -= player.speed;
-      if (keys.right) player.vx += player.speed;
-      player.vx *= FRICTION;
-      player.x += player.vx;
+      if (keys.left) player.vx -= player.speed * dt;
+      if (keys.right) player.vx += player.speed * dt;
+      player.vx *= Math.pow(FRICTION, dt);
+      player.x += player.vx * dt;
 
       // wrap horizontally when exiting the playfield
       if (player.x > W) {
@@ -195,8 +299,9 @@ function ContactGame({ onUnlock }) {
       }
 
       // gravity / vertical
-      player.vy += GRAV;
-      player.y += player.vy;
+      const previousY = player.y;
+      player.vy += GRAV * dt;
+      player.y += player.vy * dt;
 
       // ground collision
       if (player.y + player.h >= GROUND_Y) {
@@ -216,12 +321,14 @@ function ContactGame({ onUnlock }) {
       // brick collisions (detect head-bump)
       for (let i = 0; i < bricks.length; i++) {
         const b = bricks[i];
-        // only consider if player's head intersects brick bottom while moving up
-        const future = { x: player.x, y: player.y, w: player.w, h: player.h };
-        const brickRect = { x: b.x, y: b.y, w: b.w, h: b.h };
-        if (rectsOverlap(future, brickRect)) {
+        const overlaps =
+          player.x < b.x + b.w &&
+          player.x + player.w > b.x &&
+          player.y < b.y + b.h &&
+          player.y + player.h > b.y;
+        if (overlaps) {
           // coming from below into brick
-          const prevTop = player.y - player.vy;
+          const prevTop = previousY;
           if (player.vy < 0 && prevTop > b.y + b.h - 2) {
             // bonk!
             player.y = b.y + b.h; // push back down a tad
@@ -242,12 +349,12 @@ function ContactGame({ onUnlock }) {
       }
 
       // update items (float & bounce)
-      for (const it of items) {
-        if (!it.alive) continue;
-        it.vy += 0.12; // slight gravity then hover
+      for (let i = items.length - 1; i >= 0; i -= 1) {
+        const it = items[i];
+        it.vy += 0.12 * dt; // slight gravity then hover
         it.vy *= 0.98;
-        it.x += it.vx;
-        it.y += it.vy;
+        it.x += it.vx * dt;
+        it.y += it.vy * dt;
 
         // bounce on walls
         if (it.x < 10 || it.x > W - 10) it.vx *= -1;
@@ -263,42 +370,30 @@ function ContactGame({ onUnlock }) {
         }
 
         // collect?
-        const playerRect = { x: player.x, y: player.y, w: player.w, h: player.h };
         const pickupRadius = 14;
-        const itemRect = {
-          x: it.x - pickupRadius,
-          y: it.y - pickupRadius,
-          w: pickupRadius * 2,
-          h: pickupRadius * 2,
-        };
-        if (rectsOverlap(playerRect, itemRect)) {
-          it.alive = false;
-          openSafeExternalUrl(it.url);
+        const overlapsPlayer =
+          player.x < it.x + pickupRadius &&
+          player.x + player.w > it.x - pickupRadius &&
+          player.y < it.y + pickupRadius &&
+          player.y + player.h > it.y - pickupRadius;
+        if (overlapsPlayer) {
+          items.splice(i, 1);
+          stopPlayer();
+          queuedExternalUrl = it.url;
+          break;
         }
       }
 
       // draw
-      ctx.clearRect(0, 0, W, H);
-
-      // sky
-      const g = ctx.createLinearGradient(0, 0, 0, H);
-      g.addColorStop(0, "#0b1220");
-      g.addColorStop(1, "#111827");
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, W, H);
-
-      // ground
-      ctx.fillStyle = "#1f2937";
-      ctx.fillRect(0, GROUND_Y, W, H - GROUND_Y);
+      ctx.drawImage(backgroundLayer, 0, 0);
 
       // bricks
       for (const b of bricks) {
-        drawBrick(ctx, b);
+        ctx.drawImage(b.used ? brickSpriteUsed : brickSpriteFresh, b.x, b.y);
       }
 
       // items
       for (const it of items) {
-        if (!it.alive) continue;
         ctx.save();
         ctx.translate(it.x, it.y);
         const iconSize = 28;
@@ -319,7 +414,17 @@ function ContactGame({ onUnlock }) {
       }
 
       // player (little suit person)
-      drawSuitDude(ctx, player.x, player.y, player.w, player.h);
+      ctx.drawImage(
+        playerSprite,
+        player.x - PLAYER_SPRITE_OFFSET_X,
+        player.y - PLAYER_SPRITE_OFFSET_Y
+      );
+
+      if (queuedExternalUrl) {
+        const urlToOpen = queuedExternalUrl;
+        queuedExternalUrl = null;
+        openSafeExternalUrl(urlToOpen);
+      }
 
       raf = requestAnimationFrame(step);
     };
@@ -329,15 +434,18 @@ function ContactGame({ onUnlock }) {
       cancelAnimationFrame(raf);
       window.removeEventListener("keydown", down);
       window.removeEventListener("keyup", up);
+      window.removeEventListener("blur", handleBlur);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [onUnlock]);
 
   return (
     <canvas
       ref={ref}
-      width={720}
-      height={380}
+      width={520}
+      height={270}
       className="rounded-xl border border-white/10 shadow-inner"
+      aria-label="Platform game used to unlock social links"
     />
   );
 }

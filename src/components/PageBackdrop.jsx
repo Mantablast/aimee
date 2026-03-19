@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 
 const WIDTH = 1600;
 const HEIGHT = 1200;
@@ -188,10 +188,10 @@ function getSurfaceHeight(x, lineY, time, phase, emphasis, surfaceObjects) {
   return objectLift + backShoulder * 0.26 - frontDrop * 0.14 + travelingFold + contourRipple;
 }
 
-function buildBlanketPath(line, time, surfaceObjects) {
+function buildBlanketPath(line, time, surfaceObjects, sampleStep = SAMPLE_STEP) {
   const points = [];
 
-  for (let x = -OVERSCAN; x <= WIDTH + OVERSCAN; x += SAMPLE_STEP) {
+  for (let x = -OVERSCAN; x <= WIDTH + OVERSCAN; x += sampleStep) {
     const subtleDrape = Math.sin((x / WIDTH) * Math.PI * 0.92 + time * 0.08) * 8.5;
     const y =
       line.baseY -
@@ -204,7 +204,7 @@ function buildBlanketPath(line, time, surfaceObjects) {
   return buildSplinePath(points);
 }
 
-export default function PageBackdrop() {
+export default function PageBackdrop({ motionLevel = "full" }) {
   const prefersReducedMotion = usePrefersReducedMotion();
   const scope = useId().replace(/:/g, "");
   const strokeId = `page-backdrop-stroke-${scope}`;
@@ -212,12 +212,18 @@ export default function PageBackdrop() {
   const [surfaceObjects] = useState(() => createSurfaceObjects());
   const strokeRefs = useRef([]);
   const haloRefs = useRef([]);
+  const lines = useMemo(
+    () => (motionLevel === "lite" ? LINES.filter((_, index) => index % 2 === 0) : LINES),
+    [motionLevel]
+  );
+  const sampleStep = motionLevel === "lite" ? 128 : SAMPLE_STEP;
+  const shouldAnimate = !prefersReducedMotion && motionLevel !== "static";
 
   useEffect(() => {
     const drawFrame = (timeSeconds) => {
-      for (let index = 0; index < LINES.length; index += 1) {
-        const line = LINES[index];
-        const path = buildBlanketPath(line, timeSeconds, surfaceObjects);
+      for (let index = 0; index < lines.length; index += 1) {
+        const line = lines[index];
+        const path = buildBlanketPath(line, timeSeconds, surfaceObjects, sampleStep);
 
         strokeRefs.current[index]?.setAttribute("d", path);
         haloRefs.current[index]?.setAttribute("d", path);
@@ -226,22 +232,27 @@ export default function PageBackdrop() {
 
     drawFrame(0);
 
-    if (prefersReducedMotion || typeof window === "undefined") {
+    if (!shouldAnimate || typeof window === "undefined") {
       return undefined;
     }
 
     let animationFrameId = 0;
     const start = window.performance.now();
+    const minFrameMs = motionLevel === "lite" ? 1000 / 12 : 1000 / 24;
+    let lastRenderedAt = -Infinity;
 
     const render = (now) => {
-      drawFrame((now - start) / 1000);
+      if (now - lastRenderedAt >= minFrameMs) {
+        drawFrame((now - start) / 1000);
+        lastRenderedAt = now;
+      }
       animationFrameId = window.requestAnimationFrame(render);
     };
 
     animationFrameId = window.requestAnimationFrame(render);
 
     return () => window.cancelAnimationFrame(animationFrameId);
-  }, [prefersReducedMotion, surfaceObjects]);
+  }, [lines, motionLevel, sampleStep, shouldAnimate, surfaceObjects]);
 
   return (
     <div
@@ -275,8 +286,8 @@ export default function PageBackdrop() {
         </defs>
 
         <g>
-          {LINES.map((line, index) => {
-            const initialPath = buildBlanketPath(line, 0, surfaceObjects);
+          {lines.map((line, index) => {
+            const initialPath = buildBlanketPath(line, 0, surfaceObjects, sampleStep);
 
             return (
               <g key={line.id}>
