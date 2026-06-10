@@ -1,20 +1,9 @@
 import PageBackdrop from "../components/PageBackdrop";
-import { FEATURE_PROJECTS } from "../components/FeatureProjects";
+import { PROJECTS } from "../data/projects";
 import { toSafeHttpUrl } from "../utils/safeUrl";
 
-const EXTRA_PROJECTS = [
-  {
-    title: "Tailored Motivator",
-    description:
-      "A simple chrome extension that provides tailored motivational quotes based on user preferences.",
-    image: "/icon48.png",
-    repo: "https://github.com/Mantablast/tailored-motivator",
-    demo: "https://chromewebstore.google.com/detail/tailored-motivator/ikbflbdegpbchkddkjplnbhikggjelca",
-  },
-];
-
 export default function Projects() {
-  const projects = [...FEATURE_PROJECTS, ...EXTRA_PROJECTS];
+  const projects = PROJECTS;
 
   return (
     <>

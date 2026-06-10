@@ -1,0 +1,19 @@
+Cloudflare Web Analytics on AWS/CloudFront
+
+1. Add this to index.html:
+   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"YOUR_TOKEN"}'></script>
+
+2. Update CloudFront CSP:
+   script-src: add https://static.cloudflareinsights.com
+   connect-src: add https://cloudflareinsights.com
+
+3. If using Turnstile too, also allow:
+   script-src/connect-src/frame-src/font-src: https://challenges.cloudflare.com
+
+4. Build:
+   npm run build
+
+5. Deploy AWS/CDK so CloudFront gets the new headers.
+
+6. Do not pass placeholder values like YOUR_HOSTED_ZONE_ID.
+   Use the real Route53 hosted zone id or a deploy script that looks it up.
