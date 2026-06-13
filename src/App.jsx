@@ -8,7 +8,6 @@ import HouseCatLogo from "./components/HouseCatLogo";
 import SiteFooter from "./components/SiteFooter";
 
 const NAV = [
-  { href: "https://github.com/Mantablast", label: "Github" },
   { href: "/projects", label: "Projects" },
   { href: "/cv", label: "CV" },
   { href: "/contact", label: "Socials" },

@@ -21,7 +21,6 @@ export default function FeatureProjects() {
       {/* Rail-safe stack: no items-end, no marginRight */}
       <div className="w-full flex flex-col gap-4">
         {projects.map((project, idx) => {
-          const repoHref = toSafeHttpUrl(project.repo);
           const demoHref = toSafeHttpUrl(project.demo);
           if (!demoHref) return null;
 
@@ -52,16 +51,6 @@ export default function FeatureProjects() {
                       {project.description}
                     </p>
                     <div className="mt-1 flex gap-2">
-                      {repoHref && (
-                        <a
-                          href={repoHref}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="mt-2 inline-block text-xs text-blue-300 hover:underline"
-                        >
-                          Repo
-                        </a>
-                      )}
                       <a
                         href={demoHref}
                         target="_blank"

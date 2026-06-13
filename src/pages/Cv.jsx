@@ -103,7 +103,7 @@ export default function Cv() {
 
   return (
     <>
-      <PageBackdrop />
+      <PageBackdrop motionLevel="lite" />
       <main className="relative z-10 flex min-h-screen w-full items-center justify-center px-6 py-24">
         <section className="w-full max-w-xl rounded-2xl border border-white/10 bg-black/60 px-6 py-8 text-white shadow-2xl backdrop-blur">
           <header className="mb-6 text-center">

@@ -11,7 +11,6 @@ export const FEATURE_PROJECTS = [
     description:
       "Pick a date range and drop a halo on the map.  See events, save events.  Time is precious, plot your course.",
     image: "/kronodrop.png",
-    // repo intentionally omitted (private)
     demo: "https://d243n2kondfjst.cloudfront.net/",
   },
   {
@@ -26,7 +25,6 @@ export const FEATURE_PROJECTS = [
     description:
       "A lightweight web game that turns your contribution calendar into a lava-running puzzle.",
     image: "/burnedbutt.png",
-    repo: "https://github.com/Mantablast/zero-commits-are-lava",
     demo: "https://zerocommitsarelava.com",
   },
 ];
@@ -37,8 +35,16 @@ export const EXTRA_PROJECTS = [
     description:
       "A simple chrome extension that provides tailored motivational quotes based on user preferences.",
     image: "/icon48.png",
-    repo: "https://github.com/Mantablast/tailored-motivator",
     demo: "https://chromewebstore.google.com/detail/tailored-motivator/ikbflbdegpbchkddkjplnbhikggjelca",
+  },
+];
+
+export const COMING_SOON_PROJECTS = [
+  {
+    title: "Octivary",
+    description:
+      "Octivary helps people buy products by acting as a mini procurement analyst, using math to rank their requirements",
+    image: "/octivary.png",
   },
 ];
 

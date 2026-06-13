@@ -3,7 +3,7 @@ export default function SiteFooter() {
 
   return (
     <footer className="site-footer">
-      <p className="footer-copy">© {year} Aimee Jesso.</p>
+      <p className="footer-copy">© {year} Aimee J.</p>
       <a
         className="footer-kofi"
         href="https://ko-fi.com/aimeej"
