@@ -4,7 +4,7 @@ export const FEATURE_PROJECTS = [
     description:
       "An online websocket drawing game with stored prompts design to poke fun at human behavior.",
     image: "/oddly-specific-icon.png",
-    demo: "https://www.oddlyspecific.com/",
+    demo: "https://www.oddlyspecific.games/",
   },
   {
     title: "KronoDrop",

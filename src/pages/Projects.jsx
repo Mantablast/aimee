@@ -10,9 +10,6 @@ export default function Projects() {
       <PageBackdrop motionLevel="lite" />
       <main className="relative z-10 mx-auto flex min-h-screen w-full max-w-5xl flex-col px-6 py-24 text-white">
         <header className="mb-10 text-center">
-          <p className="text-xs uppercase tracking-[0.4em] text-white/60">
-            Projects
-          </p>
           <h1 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
             Featured builds
           </h1>
