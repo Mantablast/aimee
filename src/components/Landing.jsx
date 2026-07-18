@@ -15,7 +15,7 @@ const PHRASES = [
   "🤝 sample sets for awesome co-workers",
   "🧪 regression tests and data validation suites",
   "✏️ solutions to tricky problems",
-  "😎 cool stuff",
+  "📈 stats for big decision making",
   "📁 projects driven by curiosity",
   "🚨 alerts for silent errors occurring in production",
   "⛏️ tools that support dev work",
