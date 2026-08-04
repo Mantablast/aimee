@@ -22,12 +22,10 @@ export default function FeatureProjects() {
       <div className="w-full flex flex-col gap-4">
         {projects.map((project, idx) => {
           const demoHref = toSafeHttpUrl(project.demo);
-          if (!demoHref) return null;
-
           return (
             <article
               key={project.title}
-              className={`w-full ${INDENT[idx]} group`}
+              className={`w-full ${INDENT[idx] ?? "pl-0"} group`}
             >
               <div className="relative w-full overflow-hidden rounded-xl bg-white/5 dark:bg-white/5 ring-1 ring-white/10 backdrop-blur
                               transition-transform duration-300 group-hover:-translate-y-0.5">
@@ -50,16 +48,20 @@ export default function FeatureProjects() {
                     <p className="mt-1 text-xs text-white/80">
                       {project.description}
                     </p>
-                    <div className="mt-1 flex gap-2">
+                    {demoHref ? (
                       <a
                         href={demoHref}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-2 inline-block text-xs text-blue-300 hover:underline"
+                        className="mt-3 inline-block text-xs text-blue-300 hover:underline"
                       >
                         Demo
                       </a>
-                    </div>
+                    ) : (
+                      <p className="mt-3 text-xs text-orange-200/90">
+                        {project.status ?? "In development"}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

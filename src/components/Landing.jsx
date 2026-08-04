@@ -20,6 +20,7 @@ const PHRASES = [
   "🚨 alerts for silent errors occurring in production",
   "⛏️ tools that support dev work",
   "⚙️ tools that save companies mega stacks of money",
+  "📘 high level + tech level docs for teams & stakeholders"
 ];
 
 function usePrefersReducedMotion() {

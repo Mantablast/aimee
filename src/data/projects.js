@@ -1,5 +1,12 @@
 export const FEATURE_PROJECTS = [
   {
+    title: "Octivary",
+    description:
+      "Octivary helps people choose products/experiences by acting as a mini procurement analyst, using math to score whats imporant.",
+    image: "/octivary.png",
+    demo: "https://octivary.com",
+  },
+  {
     title: "Oddly Specific",
     description:
       "An online websocket drawing game with stored prompts design to poke fun at human behavior.",
@@ -19,14 +26,7 @@ export const FEATURE_PROJECTS = [
       "Retro prompt generator for remote meetings.  Built for remote teams and online gatherings, it transforms awkward silences into shared moments of interaction.",
     image: "/bearlounge3.png",
     demo: "https://screensharebear.com/",
-  },
-  {
-    title: "Zero Commits Are Lava",
-    description:
-      "A lightweight web game that turns your contribution calendar into a lava-running puzzle.",
-    image: "/burnedbutt.png",
-    demo: "https://zerocommitsarelava.com",
-  },
+  }
 ];
 
 export const EXTRA_PROJECTS = [
@@ -37,15 +37,17 @@ export const EXTRA_PROJECTS = [
     image: "/icon48.png",
     demo: "https://chromewebstore.google.com/detail/tailored-motivator/ikbflbdegpbchkddkjplnbhikggjelca",
   },
+  {
+    title: "Zero Commits Are Lava",
+    description:
+      "A lightweight web game that turns your contribution calendar into a lava-running puzzle.",
+    image: "/burnedbutt.png",
+    demo: "https://zerocommitsarelava.com"
+  }
 ];
 
 export const COMING_SOON_PROJECTS = [
-  {
-    title: "Octivary",
-    description:
-      "Octivary helps people buy products by acting as a mini procurement analyst, using math to rank their requirements",
-    image: "/octivary.png",
-  },
+
 ];
 
 export const PROJECTS = [...FEATURE_PROJECTS, ...EXTRA_PROJECTS];
